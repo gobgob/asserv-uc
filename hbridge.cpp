@@ -29,7 +29,7 @@ void HBridge::setSpeed(int speed)
 	int direction;
 		// Serial.print("speed1 : ");
 		// Serial.println(speed);
-	speed=speed/4;//map(speed,-1024,1024,-255,255);
+	speed=speed;//map(speed,-1024,1024,-255,255);
 		// Serial.print("speed2 : ");
 		// Serial.println(speed);
 	speed=MIN(HB_VMAX,MAX(HB_VMIN,speed));
@@ -38,10 +38,10 @@ void HBridge::setSpeed(int speed)
 		// Serial.println(speed);
 	if (speed>0)
 	{
-		direction=1;
+		direction=0;
 		pwm=speed;
 	}else{
-		direction=0;
+		direction=1;
 		pwm=-speed;
 	}
 

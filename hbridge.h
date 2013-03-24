@@ -2,14 +2,15 @@
 #define HBRIDGE_H
 
 #include <Arduino.h> 
+#include "conf.h"
 
-#define HB_VMAX (+254)
+#define HB_VMAX (+PWM_MAX)
 #define HB_VMIN (-HB_VMAX)
 
 class HBridge {
 private:
-	int speed;
-	int pwmPin;
+	int32_t speed;
+	int32_t pwmPin;
 	int dirPin;
 	int brakePin;
 
