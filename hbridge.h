@@ -10,9 +10,10 @@
 class HBridge {
 private:
 	int32_t speed;
-	int32_t pwmPin;
+	int pwmPin;
 	int dirPin;
 	int brakePin;
+	volatile uint8_t * pwmRegister;
 
 public:
 	HBridge(int pwmPin, int dirPin, int brakePin);
@@ -26,10 +27,6 @@ public:
 
 	void brakeOn();
 	void brakeOff();
-
-	int getMaxOutput();
-	int getMinOutput();
-
 
 };
 
