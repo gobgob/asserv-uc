@@ -10,19 +10,18 @@
 class HBridge {
 private:
 	int32_t speed;
-	int pwmPin;
-	int dirPin;
-	int brakePin;
-	volatile uint8_t * pwmRegister;
+	uint8_t pwmPin;
+	uint8_t dirPin;
+	uint8_t brakePin;
 
 public:
-	HBridge(int pwmPin, int dirPin, int brakePin);
+	HBridge(uint8_t pwmPin, uint8_t dirPin, uint8_t brakePin);
 
 	void setup();
 	/*
 	*Set the motor speed value between -255 and 255
 	*/
-	void setSpeed(int speed);
+	void setSpeed(int32_t newSpeed);
 	int getSpeed();
 
 	void brakeOn();

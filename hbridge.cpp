@@ -1,11 +1,10 @@
 #include "hbridge.h"
 #include "utils.h"
 
-HBridge::HBridge(int pwmPin, int dirPin, int brakePin):
+HBridge::HBridge(uint8_t pwmPin, uint8_t dirPin, uint8_t brakePin):
 pwmPin(pwmPin),
 dirPin(dirPin),
-brakePin(brakePin),
-pwmRegister(pwmRegister)
+brakePin(brakePin)
 {
 }
 
@@ -16,14 +15,12 @@ void HBridge::setup()
 	pinMode(brakePin, OUTPUT);
 }
 
-
-
-void HBridge::setSpeed(int speed)
+void HBridge::setSpeed(int32_t newSpeed)
 {
 	int pwm;
 	int direction;
 
-	speed=MIN(HB_VMAX,MAX(HB_VMIN,speed));
+	speed=MIN(HB_VMAX,MAX(HB_VMIN,newSpeed));
 
 	if (speed>0)
 	{
