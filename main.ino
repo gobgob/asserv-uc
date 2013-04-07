@@ -21,6 +21,9 @@ void setup()
 	asserv_setSpeedMaxDist(90000);
 	asserv_setSpeedMaxAngle(90000);
 	asserv_setAbsTarget(0,0);
+
+	odo_setTickRatio(1100,263.56058576);
+	odo_enable();
 	asserv_enable();
 
 }

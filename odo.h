@@ -8,6 +8,10 @@ extern volatile double odo_Y;
 extern volatile double odo_angle;
 
 
+void odo_enable();
+void odo_disable();
+
+void odo_setTickRatio(double new_ticks_per_meters,double new_ticks_per_rads);
 
 void odo_update();
 
