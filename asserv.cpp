@@ -34,6 +34,8 @@ volatile bool asserv_enabled = 0;
 volatile int32_t old_dist_right=0;
 volatile int32_t old_dist_left=0;
 
+static void wait_for_asserve();
+
 void asserv_setup()
 {
 	pinMode(DEBUG_PIN_ASSERV,OUTPUT);
@@ -59,7 +61,7 @@ void asserv_disable()
 	asserv_enabled=false;
 }
 
-void wait_for_asserve()
+static void wait_for_asserve()
 {
 	while (mutex_asserve_is_running)
 	{
