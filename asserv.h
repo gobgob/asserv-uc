@@ -11,10 +11,20 @@ void asserv_run();
 void asserv_enable();
 void asserv_disable();
 
-void asserv_setSpeedMax(uint32_t speedMax); //ticks/iterations
-void asserv_setAccMax(uint32_t accMax); //ticks/(iterations²)
+void asserv_setSpeedMaxDist(uint32_t new_speed_max); //ticks/iterations
+void asserv_setSpeedMaxAngle(uint32_t new_speed_max_angle);
+void asserv_setAccMaxDist(uint32_t new_acc_max);//ticks/(iterations²)
 void asserv_setTarget(int32_t newDist,int32_t newAngle);
 
+void asserv_setCoeffDist(int32_t new_Kp_dist,int32_t new_Kd_dist);
+void asserv_setCoeffAngle(int32_t new_Kp_angle,int32_t new_Kd_angle);
+
+//asup
+extern volatile int32_t mxcd;
+extern volatile int32_t mxca;
+// extern volatile float y;
+// extern volatile float X;
+// extern volatile float Y;
 
 //do not write these directly
 //available here fore debug purpose only
