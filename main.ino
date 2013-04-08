@@ -4,6 +4,7 @@
 #include "asserv.h"
 #include "odo.h"
 #include "coders.h"
+#include "navigation.h"
 
 
 void setup()
@@ -16,17 +17,18 @@ void setup()
 	interrupts();
 	Serial.begin(115200);
 
-	asserv_setCoeffDist(2*1024,5000*1024);
-	asserv_setCoeffAngle(1*1024/2,10000*1024);
+	asserv_setCoeffDist(2*1024,5*1024);
+	asserv_setCoeffAngle(4*1024/2,10*1024);
 	asserv_setSpeedMaxDist(90000);
 	asserv_setSpeedMaxAngle(90000);
-	asserv_setAbsTarget(0,0);
+	asserv_setTarget(0,0,ABS);
 
-	odo_setTickRatio(1100,263.56058576);
+	odo_setTickRatio(1420.06472492,265.868332435);
 	odo_enable();
 	asserv_enable();
 
 }
+
 
 ISR(TIMER1_COMPA_vect) //asserv
 {
@@ -44,7 +46,7 @@ ISR (PCINT1_vect)//coders
 
 void loop()
 {
-	delay(100);
+	delay(200);
 	Serial.println("");
 	Serial.println("");
 
@@ -52,6 +54,10 @@ void loop()
 	Serial.println(coderLeft.count);
 	Serial.print("coderRight.count=");
 	Serial.println(coderRight.count);
+	Serial.print("dist=");
+	Serial.println((coderRight.count+coderLeft.count)/2);
+	Serial.print("angle=");
+	Serial.println(coderRight.count-coderLeft.count);
 
 	Serial.print("odo_X=");
 	Serial.println(odo_X);
@@ -60,11 +66,14 @@ void loop()
 	Serial.print("odo_angle=");
 	Serial.println(odo_angle);
 	// Serial.print("debug=");
-	// Serial.println(debug);
+	// Serial.print("new_angle=");
+	// Serial.println(new_angle);
 
-	if(abs(err_angle)<30 && abs(err_dist)<50)
+
+	if(millis()>2000 && status==0)
 	{
-		asserv_setRelTarget(210,60);
+		nav_gotoPoint(0.25,0.25, 0.03);
+		//nav_gotoPoint(0.25,0.25, 0.03);
 	}
 
 	digitalWrite(13,!digitalRead(13));
