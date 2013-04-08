@@ -11,6 +11,9 @@ extern volatile double odo_angle;
 void odo_enable();
 void odo_disable();
 
+int32_t odo_meters2ticks(double meters);
+int32_t odo_rads2ticks(double rads);
+
 void odo_setTickRatio(double new_ticks_per_meters,double new_ticks_per_rads);
 
 void odo_update();

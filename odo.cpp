@@ -48,6 +48,17 @@ static void wait_for_odo()
 	}
 }
 
+int32_t odo_meters2ticks(double meters)
+{
+	return meters*ticks_per_meters;
+}
+
+
+int32_t odo_rads2ticks(double rads)
+{
+	return rads*ticks_per_rads;
+}
+
 void odo_update()
 {
 
