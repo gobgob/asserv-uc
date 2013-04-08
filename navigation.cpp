@@ -17,8 +17,6 @@ int nav_gotoPoint(double new_x, double new_y, double delta_max)
 	if(approx_dist>=delta_max)
 	{
 		double new_angle = atan2(diff_y,diff_x);
-		if(diff_x<0) //cos is < 0
-			new_angle=-new_angle;
 		asserv_setTarget(
 			odo_meters2ticks(approx_dist),
 			odo_rads2ticks(new_angle),
