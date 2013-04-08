@@ -34,6 +34,9 @@ volatile bool asserv_enabled = 0;
 volatile int32_t old_dist_right=0;
 volatile int32_t old_dist_left=0;
 
+volatile int32_t dist=0;
+volatile int32_t angle=0;
+
 static void wait_for_asserve();
 
 void asserv_setup()
@@ -121,24 +124,22 @@ void asserv_setSpeedMaxAngle(uint32_t new_speed_max_angle)
 		asserv_enable();
 }
 
-void asserv_setAbsTarget(int32_t new_dist,int32_t new_angle)
+void asserv_setTarget(int32_t new_dist,int32_t new_angle,uint8_t flags)
 {
 	bool enable_save = asserv_enabled;
 	asserv_disable();
 	wait_for_asserve();
-	target_dist=new_dist;
-	target_angle=new_angle;
-	if(enable_save)
-		asserv_enable();
-}
 
-void asserv_setRelTarget(int32_t new_dist,int32_t new_angle)
-{
-	bool enable_save = asserv_enabled;
-	asserv_disable();
-	wait_for_asserve();
-	target_dist+=new_dist;
-	target_angle+=new_angle;
+	if(flags&DEST_ABS)
+		target_dist=new_dist;
+	else
+		target_dist=dist+new_dist;
+
+	if(flags&ANGL_ABS)
+		target_angle=new_angle;
+	else
+		target_angle+=angle+new_angle;
+
 	if(enable_save)
 		asserv_enable();
 }
@@ -153,8 +154,8 @@ void asserv_run()
 	int32_t dist_right=coderRight.count;
 	int32_t dist_left=coderLeft.count;
 
-	int32_t dist=(dist_left+dist_right)/2;
-	int32_t angle=dist_right-dist_left;
+	dist=(dist_left+dist_right)/2;
+	angle=dist_right-dist_left;
 
 	int32_t speed_right=(dist_right-old_dist_right);
 	int32_t speed_left=(dist_left-old_dist_left);
