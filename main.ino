@@ -18,7 +18,7 @@ void setup()
 	Serial.begin(115200);
 
 	asserv_setCoeffDist(2*1024,5*1024);
-	asserv_setCoeffAngle(4*1024/2,10*1024);
+	asserv_setCoeffAngle(6*1024/2,10*1024);
 	asserv_setSpeedMaxDist(90000);
 	asserv_setSpeedMaxAngle(90000);
 	asserv_setTarget(0,0,ABS);
@@ -43,10 +43,13 @@ ISR (PCINT1_vect)//coders
 	coders_tick();
 }
 
-
+int state = 1;
+double A=0;
+double B=0;
+double R=0.40;
 void loop()
 {
-	delay(200);
+	delay(1);
 	Serial.println("");
 	Serial.println("");
 
@@ -70,10 +73,43 @@ void loop()
 	// Serial.println(new_angle);
 
 
-	if(millis()>2000 && status==0)
+
+	if(millis()>2000)
 	{
-		nav_gotoPoint(0.25,0.25, 0.03);
-		//nav_gotoPoint(0.25,0.25, 0.03);
+		//nav_gotoPoint(0.25,0, 0.03);
+		//nav_gotoPoint(-0.25,0.25, 0.03);
+		//nav_gotoPoint(0.25,-0.25, 0.03);
+		//nav_gotoPoint(-0.25,-0.25, 0.03);
+		//nav_gotoPoint(0.25,0, 0.03);
+		//nav_gotoPoint(0,0.25, 0.03);
+		// switch (state)
+		// {
+		// 	case 0:
+		// 		if(nav_gotoPoint(0,-0.25, 0.10)==0)
+		// 		{
+		// 			state++;
+		// 		}
+		// 		break;
+		// 	case 1:
+		// 		if(nav_gotoPoint(0,-0.50, 0.03)==0)
+		// 		{
+		// 			state++;
+		// 		}
+		// 		break;
+		// 	case 3:
+		// 		asserv_setTarget(0,0,REL);
+		// 		break;
+		// }
+
+		A=R*sin((2.*3.14/100.)*state);
+		B=R*cos((2.*3.14/100.)*state)-R;
+
+		if(nav_gotoPoint(A, B, 0.03)==0)
+		{
+			//delay(500);
+			state++;
+		}
+
 	}
 
 	digitalWrite(13,!digitalRead(13));
