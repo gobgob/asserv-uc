@@ -22,6 +22,9 @@ void HBridge::setSpeed(int32_t newSpeed)
 
 	speed=MIN(HB_VMAX,MAX(HB_VMIN,newSpeed));
 
+	if(abs(speed)<ZONE_51)
+		speed=0;
+
 	if (speed>0)
 	{
 		direction=0;

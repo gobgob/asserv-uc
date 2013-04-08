@@ -20,6 +20,7 @@
 #define CODER2A_INT    PCINT9
 #define CODER2B_INT    PCINT8
 
+#define ZONE_51	20
 
 #define DEBUG_PIN_ASSERV 9
 
