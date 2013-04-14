@@ -288,14 +288,15 @@ target: $(TARGET).hex
 
 upload: target
 	@echo "\nUploading to board..."
-	@test -n "$(SERIALDEV)" || { \
-		echo "error: SERIALDEV could not be determined automatically." >&2; \
-		exit 1; }
-	@test 0 -eq $(SERIALDEVGUESS) || { \
-		echo "*GUESSING* at serial device:" $(SERIALDEV); \
-		echo; }
-	stty $(STTYFARG) $(SERIALDEV) hupcl
-	$(AVRDUDE) $(AVRDUDEFLAGS) -U flash:w:$(TARGET).hex:i
+#	@test -n "$(SERIALDEV)" || { \
+#		echo "error: SERIALDEV could not be determined automatically." >&2; \
+#		exit 1; }
+#	@test 0 -eq $(SERIALDEVGUESS) || { \
+#		echo "*GUESSING* at serial device:" $(SERIALDEV); \
+#		echo; }
+#	stty $(STTYFARG) $(SERIALDEV) hupcl
+#	$(AVRDUDE) $(AVRDUDEFLAGS) -U flash:w:$(TARGET).hex:i
+	$(AVRDUDE) -c usbtiny -p m328 -U flash:w:$(TARGET).hex:i
 
 clean:
 	rm -f $(OBJECTS)
