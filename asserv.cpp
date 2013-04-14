@@ -5,8 +5,8 @@
 #include "coders.h"
 #include "odo.h"
 
-HBridge motorLeft(MOTORL_PWM,MOTORL_DIR,0);
-HBridge motorRight(MOTORR_PWM,MOTORR_DIR,0);
+HBridge motorLeft(MOTORL_PWM,MOTORL_DIR,MOTORL_BRAKE);
+HBridge motorRight(MOTORR_PWM,MOTORR_DIR,MOTORR_BRAKE);
 
 //valeurs de réglage
 volatile int32_t speed_max_dist=0;
@@ -53,6 +53,11 @@ void asserv_setup()
 	TCCR1B |= (1 << WGM12);
 	TCCR1B |= (1 << CS10);// Set 1 prescaler = 1
 	TIMSK1 = (1 << OCIE1A);//enable interrupt sur comparaison réussie
+}
+
+void asserve_printDebug()
+{
+
 }
 
 void asserv_enable()

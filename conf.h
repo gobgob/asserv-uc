@@ -20,21 +20,25 @@
 #define CODER2A_INT    PCINT9
 #define CODER2B_INT    PCINT8
 
-#define ZONE_51	20
+#define ZONE_51	50
 
-#define DEBUG_PIN_ASSERV 9
+#define DEBUG_PIN_ASSERV 2
 
-#define MOTORL_PWM	5
-#define MOTORL_DIR	4
+#define MOTORL_PWM		5
+#define MOTORL_DIR		4
+#define MOTORL_BRAKE	8
+#define MOTORL_SENSE	A4
 
-#define MOTORR_PWM	6
-#define MOTORR_DIR	8
+#define MOTORR_PWM		6
+#define MOTORR_DIR		7
+#define MOTORR_BRAKE	9
+#define MOTORR_SENSE	A5
 
 
 /*pid setup*/
 #define PID_FREQ 500
-#define PWM_MAX 250
+#define PWM_MAX 255
 
-#define TICK2MM
+#define ACK_DIST	0.01 //en m
 
 #endif

@@ -13,6 +13,7 @@ void HBridge::setup()
 	pinMode(pwmPin, OUTPUT);
 	pinMode(dirPin, OUTPUT);
 	pinMode(brakePin, OUTPUT);
+	digitalWrite(brakePin,LOW);
 }
 
 void HBridge::setSpeed(int32_t newSpeed)
