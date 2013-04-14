@@ -20,7 +20,6 @@
 #define CODER2A_INT    PCINT9
 #define CODER2B_INT    PCINT8
 
-#define ZONE_51	50
 
 #define DEBUG_PIN_ASSERV 2
 
@@ -38,6 +37,12 @@
 /*pid setup*/
 #define PID_FREQ 500
 #define PWM_MAX 255
+
+#define ZONE_51	20
+#define BLOCK_CMD_DETECT_MIN	((int32_t)(30))
+#define BLOCK_DURATION_MIN	((int32_t)(100)) //ms
+#define BLOCK_DURATION_LOOP_COUNT ((int32_t)((BLOCK_DURATION_MIN*PID_FREQ)/1000))
+
 
 #define ACK_DIST	0.01 //en m
 

@@ -34,5 +34,12 @@ extern volatile int32_t err_angle;
 extern volatile int32_t dist;
 extern volatile int32_t angle;
 
+//blockages front/back right/left
+#define	BLOCK_FR	(1<<0)
+#define	BLOCK_FL	(1<<1)
+#define	BLOCK_BR	(1<<2)
+#define	BLOCK_BL	(1<<3)
+extern	volatile uint8_t block_flags;
+
 
 #endif

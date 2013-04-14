@@ -66,6 +66,8 @@ void loop()
 	// Serial.println(odo_X);
 	// Serial.print("odo_Y=");
 	// Serial.println(odo_Y);
+	Serial.print("block_flags=");
+	Serial.println(block_flags);
 	// Serial.print("odo_angle=");
 	// Serial.println(odo_angle);
 	// Serial.print("debug=");
