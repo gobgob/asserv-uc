@@ -5,6 +5,8 @@
 #include "odo.h"
 #include "coders.h"
 #include "navigation.h"
+#include "api.h"
+#include "spi.h"
 
 
 void setup()
@@ -14,6 +16,7 @@ void setup()
 	noInterrupts();
 	coders_setup();
 	asserv_setup();
+	spi_setup();
 	interrupts();
 	Serial.begin(115200);
 
@@ -43,6 +46,11 @@ ISR (PCINT1_vect)//coders
 	coders_tick();
 }
 
+ISR( SPI_STC_vect )
+{
+	spi_interrupt();
+}
+
 int state = 1;
 double A=0;
 double B=0;
@@ -57,6 +65,30 @@ void loop()
 	// Serial.println(coderLeft.count);
 	// Serial.print("coderRight.count=");
 	// Serial.println(coderRight.count);
+	spi_process();
+	if(cmd_callback)
+	{
+		Serial.print("cmd_callback=");
+		Serial.println(cmd_callback());
+	}
+	
+static unsigned long old = 0;
+	if( millis() - old > 300 )
+	{
+		Serial.println("");
+		Serial.print("coderLeft.count=");
+		Serial.println(coderLeft.count);
+		Serial.print("coderRight.count=");
+		Serial.println(coderRight.count);
+		Serial.print("odo_X=");
+		Serial.println(odo_X,4);
+		Serial.print("odo_Y=");
+		Serial.println(odo_Y,4);
+		Serial.print("block_flags=");
+		Serial.println(block_flags);
+		old = millis();
+	}
+
 	// Serial.print("dist=");
 	// Serial.println((coderRight.count+coderLeft.count)/2);
 	// Serial.print("angle=");
