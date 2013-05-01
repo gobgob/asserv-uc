@@ -39,6 +39,8 @@ extern volatile int32_t angle;
 #define	BLOCK_FL	(1<<1)
 #define	BLOCK_BR	(1<<2)
 #define	BLOCK_BL	(1<<3)
+#define	CMD_HACK	(1<<4)
+
 extern	volatile uint8_t block_flags;
 
 

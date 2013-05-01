@@ -46,5 +46,6 @@
 
 
 #define ACK_DIST	0.01 //en m
+#define ACK_ANGLE	0.01 //en rad
 
 #endif

@@ -77,6 +77,7 @@ void spi_process()
 		frameGetSize(&size);
 		frameGetData(data);
 
+
 		switch (type)
 		{
 			case ARGS_FUNCTION:
@@ -91,6 +92,13 @@ void spi_process()
 					case ROTATE:
 						cmd_rotate(MAKEINT16T(data[1],data[2]));
 						break;
+					case GOTO:
+						cmd_goto(
+							MAKEINT16T(data[1],data[2]), \
+							MAKEINT16T(data[3],data[4]), \
+							MAKEINT16T(data[5],data[6]) \
+							);
+						break;
 					default:
 					;
 				}
@@ -104,15 +112,27 @@ void spi_process()
 						data[0]=ODO;
 						cmd_getOdo(data+1);
 						spi_sendData(GETTER,data,13);
-						frameSetSize(13);
+					break;
+					case STATUS:
+						data[0]=STATUS;
+						//data[1]=0;
+						cmd_getStatus(data+1);
+						spi_sendData(GETTER,data,2);
 					break;
 					default:
 					;
 				}
 				break;
+
+			case REBOOT:
+				spi_sendAck();
+				cmd_reboot();	
+				break;
 			default:
+
 			;
 		}
+
 	}
 	// if( millis() - old > 1000 )
 	// {

@@ -93,6 +93,8 @@ static unsigned long old = 0;
 		Serial.println(odo_angle,4);
 		Serial.print("block_flags=");
 		Serial.println(block_flags);
+		Serial.print("dist=");
+		Serial.println(dist);
 		old = millis();
 	}
 

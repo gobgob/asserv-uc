@@ -23,9 +23,9 @@ int nav_gotoPoint(double new_x, double new_y, double delta_max)
 			odo_rads2ticks(new_angle),
 			DEST_REL|ANGL_ABS);
 		
-		return -1;		
+		return 0;		
 	}else{
-		return 0;
+		return 1;
 	}
 
 }

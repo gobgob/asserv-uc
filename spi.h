@@ -18,6 +18,7 @@ void spi_setup();
 #define PING 6
 #define START 7
 #define STOP 8
+#define REBOOT 9
 
 // Define Getter / Setter
 #define MAX_SPEED_ROT 0
@@ -26,6 +27,7 @@ void spi_setup();
 #define KPKD_LIN 3
 #define TICK_RATIO 4
 #define ODO 4
+#define STATUS 5
 
 // Define Args Functions
 #define GOFORWARD 0
