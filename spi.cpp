@@ -43,32 +43,26 @@ void spi_interrupt()
 }
 
 
+static void spi_sendAck()
+{
+	frameSetSize(0);
+	frameSetType(ACK);
+	frameComputeChecksum();
+	if( frameSend() != 0 )
+		Serial.println("Error while putting data in send buffer");
+}
 
-// Define Type of function
-#define ACK 0
-#define NAK 1
-#define SETTER 2
-#define GETTER 3
-#define ARGS_FUNCTION 4
-#define NOARGS_FUNCTION 5
-#define PING 6
-#define START 7
-#define STOP 8
+static void spi_sendData(int type, uint8_t * data,int size)
+{
+	frameSetSize(size);
+	frameSetType(type);
+	frameSetData(data);
+	frameComputeChecksum();
+	if( frameSend() != 0 )
+		Serial.println("Error while putting data in send buffer");
+}
 
-// Define Getter / Setter
-#define MAX_SPEED_ROT 0
-#define MAX_SPEED_LIN 1
-#define KPKD_ROT 2
-#define KPKD_LIN 3
-#define TICK_RATIO 4
 
-// Define Args Functions
-#define GOFORWARD 0
-#define GOBACK 1
-#define ROTATE 2
-#define GOTO 3
-
-#define MAKEUINT16T(x,y) (uint16_t)((x<<8)|y)
 
 void spi_process()
 {
@@ -92,11 +86,26 @@ void spi_process()
 						cmd_goForwardOrBackward(MAKEUINT16T(data[1],data[2]),1);
 						break;
 					case GOBACK:
-						cmd_goForwardOrBackward(-MAKEUINT16T(data[1],data[2]),-1);
+						cmd_goForwardOrBackward(MAKEUINT16T(data[1],data[2]),-1);
 						break;
 					case ROTATE:
-						cmd_rotate(-MAKEUINT16T(data[1],data[2]));
+						cmd_rotate(MAKEINT16T(data[1],data[2]));
 						break;
+					default:
+					;
+				}
+				spi_sendAck();
+				break;
+
+			case GETTER:
+				switch(data[0])
+				{
+					case ODO:
+						data[0]=ODO;
+						cmd_getOdo(data+1);
+						spi_sendData(GETTER,data,13);
+						frameSetSize(13);
+					break;
 					default:
 					;
 				}
@@ -104,22 +113,11 @@ void spi_process()
 			default:
 			;
 		}
-
-
-
-		frameSetSize(0);
-		frameSetType(ACK);
-		for(int i=0;i<15;i++)
-			data[i] = i*i;
-		frameSetData(data);
-		frameComputeChecksum();
-		if( frameSend() != 0 )
-			Serial.println("Error while putting data in send buffer");
 	}
-	if( millis() - old > 1000 )
-	{
-		Serial.println(millis());
-		old = millis();
-	}
+	// if( millis() - old > 1000 )
+	// {
+	// 	Serial.println(millis());
+	// 	old = millis();
+	// }
 }
 

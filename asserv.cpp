@@ -38,6 +38,8 @@ volatile int32_t dist=0;
 volatile int32_t angle=0;
 
 static void wait_for_asserve();
+static void asserv_control_blockages(int32_t cmd_right, int32_t cmd_left,int32_t speed_right, int32_t speed_left);
+
 
 void asserv_setup()
 {
@@ -143,7 +145,7 @@ void asserv_setTarget(int32_t new_dist,int32_t new_angle,uint8_t flags)
 	if(flags&ANGL_ABS)
 		target_angle=new_angle;
 	else
-		target_angle+=angle+new_angle;
+		target_angle=angle+new_angle;
 
 	if(enable_save)
 		asserv_enable();
@@ -187,8 +189,12 @@ void asserv_run()
 	old_dist_left=dist_left;
 
 	asserv_control_blockages(cmd_right/1024, cmd_left/1024,speed_right, speed_left);
+
+
 	mutex_asserve_is_running=false;
 }
+
+
 
 static volatile int32_t fr_count=0;
 static volatile int32_t br_count=0;

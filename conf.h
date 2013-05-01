@@ -22,6 +22,7 @@
 
 
 #define DEBUG_PIN_ASSERV 2
+#define DEBUG_PIN_GENERAL 3
 
 #define MOTORL_PWM		5
 #define MOTORL_DIR		4
@@ -36,9 +37,9 @@
 
 /*pid setup*/
 #define PID_FREQ 500
-#define PWM_MAX 255
+#define PWM_MAX 220
 
-#define ZONE_51	20
+#define ZONE_51	6
 #define BLOCK_CMD_DETECT_MIN	((int32_t)(30))
 #define BLOCK_DURATION_MIN	((int32_t)(100)) //ms
 #define BLOCK_DURATION_LOOP_COUNT ((int32_t)((BLOCK_DURATION_MIN*PID_FREQ)/1000))

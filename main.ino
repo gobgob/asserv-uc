@@ -9,10 +9,11 @@
 #include "spi.h"
 
 
+
 void setup()
 {
 	/*pin setup*/
-	pinMode(13,OUTPUT);
+	pinMode(DEBUG_PIN_GENERAL,OUTPUT);
 	noInterrupts();
 	coders_setup();
 	asserv_setup();
@@ -20,7 +21,7 @@ void setup()
 	interrupts();
 	Serial.begin(115200);
 
-	asserv_setCoeffDist(2*1024,5*1024);
+	asserv_setCoeffDist(1*1024,5*1024);
 	asserv_setCoeffAngle(2*1024/2,100*1024);
 	asserv_setSpeedMaxDist(90000);
 	asserv_setSpeedMaxAngle(90000);
@@ -30,10 +31,13 @@ void setup()
 	odo_enable();
 	asserv_enable();
 
+
+	//cmd_goForward(200);
+
 }
 
 
-ISR(TIMER1_COMPA_vect) //asserv
+ISR(TIMER1_COMPA_vect, ISR_NOBLOCK) //asserv
 {
 	digitalWrite(DEBUG_PIN_ASSERV,HIGH);
 	asserv_run();
@@ -43,12 +47,16 @@ ISR(TIMER1_COMPA_vect) //asserv
 
 ISR (PCINT1_vect)//coders
 {
+	digitalWrite(DEBUG_PIN_GENERAL,HIGH);
 	coders_tick();
+	digitalWrite(DEBUG_PIN_GENERAL,LOW);
 }
 
 ISR( SPI_STC_vect )
 {
+	digitalWrite(DEBUG_PIN_GENERAL,HIGH);
 	spi_interrupt();
+	digitalWrite(DEBUG_PIN_GENERAL,LOW);
 }
 
 int state = 1;
@@ -57,21 +65,18 @@ double B=0;
 double R=0.40;
 void loop()
 {
-	//delay(10);
-	Serial.println("");
-	Serial.println("");
-
-	// Serial.print("coderLeft.count=");
-	// Serial.println(coderLeft.count);
-	// Serial.print("coderRight.count=");
-	// Serial.println(coderRight.count);
 	spi_process();
+	//delay(100);
+	// Serial.println("");
+
+
 	if(cmd_callback)
 	{
-		Serial.print("cmd_callback=");
-		Serial.println(cmd_callback());
+		int cb = cmd_callback();
+		// Serial.print("cmd_callback=");
+		// Serial.println(cb);
 	}
-	
+
 static unsigned long old = 0;
 	if( millis() - old > 300 )
 	{
@@ -84,6 +89,8 @@ static unsigned long old = 0;
 		Serial.println(odo_X,4);
 		Serial.print("odo_Y=");
 		Serial.println(odo_Y,4);
+		Serial.print("odo_angle=");
+		Serial.println(odo_angle,4);
 		Serial.print("block_flags=");
 		Serial.println(block_flags);
 		old = millis();
@@ -94,12 +101,9 @@ static unsigned long old = 0;
 	// Serial.print("angle=");
 	// Serial.println(coderRight.count-coderLeft.count);
 
-	// Serial.print("odo_X=");
-	// Serial.println(odo_X);
-	// Serial.print("odo_Y=");
-	// Serial.println(odo_Y);
-	Serial.print("block_flags=");
-	Serial.println(block_flags);
+
+
+
 	// Serial.print("odo_angle=");
 	// Serial.println(odo_angle);
 	// Serial.print("debug=");
@@ -107,10 +111,11 @@ static unsigned long old = 0;
 	// Serial.println(new_angle);
 
 
+	//asserv_setTarget(0,0,DEST_ABS|ANGL_ABS);
 
-	if(millis()>2000)
-	{
-		//nav_gotoPoint(0.25,0, 0.03);
+	//if(millis()>2000)
+	//{
+	//nav_gotoPoint(0.25,0, 0.03);
 		//nav_gotoPoint(-0.25,0.25, 0.03);
 		//nav_gotoPoint(0.25,-0.25, 0.03);
 		//nav_gotoPoint(-0.25,-0.25, 0.03);
@@ -141,24 +146,18 @@ static unsigned long old = 0;
 
 		// 	 if(nav_gotoPoint(A, B, 0.03)==0)
 		// 	 {
-		// 	 	//delay(500);
 		// 	 	state++;
 		// 	 }
 
+		// double R=0.30;
+		// A=2*R*sin((double)state/20.);
+		// B=R*sin(2.*(double)state/20.);
 
-double R=0.30;
-		A=2*R*sin((double)state/10);
-		B=R*sin(2.*(double)state/10.);
+	 // 	 if(nav_gotoPoint(A, B, 0.03)==0)
+	 // 	 {
+	 // 	 	state++;
+	 // 	 }
+	//}
 
-	 	 if(nav_gotoPoint(A, B, 0.03)==0)
-	 	 {
-	 	 	//delay(500);
-	 	 	state++;
-	 	 }
-
-		//Serial.print("closest_equivalent_angle=");
-		//Serial.println(closest_equivalent_angle(odo_angle,0));
-	}
-
-	digitalWrite(13,!digitalRead(13));
+	//digitalWrite(13,!digitalRead(13));
 }
