@@ -16,6 +16,12 @@ int32_t odo_rads2ticks(double rads);
 
 void odo_setTickRatio(double new_ticks_per_meters,double new_ticks_per_rads);
 
+
+void odo_setX(double new_x);
+void odo_setY(double new_y);
+void odo_setAngle(double new_angle);
+
+
 void odo_update();
 
 #endif

@@ -25,8 +25,11 @@ void asserv_setAccMaxDist(uint32_t new_acc_max);//ticks/(iterations²)
 void asserv_setTarget(int32_t new_dist,int32_t new_angle,uint8_t flags);
 
 
-void asserv_setCoeffDist(int32_t new_Kp_dist,int32_t new_Kd_dist);
-void asserv_setCoeffAngle(int32_t new_Kp_angle,int32_t new_Kd_angle);
+void asserv_setCoeffDist(uint32_t new_Kp_dist,uint32_t new_Kd_dist);
+void asserv_setCoeffAngle(uint32_t new_Kp_angle, uint32_t new_Kd_angle);
+void asserv_getCoeffDist(uint32_t * Kp,uint32_t * Kd);
+void asserv_getCoeffAngle(uint32_t * Kp, uint32_t * Kd);
+
 
 extern volatile int32_t err_dist;
 extern volatile int32_t err_angle;

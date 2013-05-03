@@ -1,4 +1,4 @@
-#killall screen
+killall screen
 make
 make upload
 

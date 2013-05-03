@@ -17,11 +17,11 @@ volatile int32_t acc_max=0;
 volatile int32_t target_dist=0;		//distance cumulée à atteindre
 volatile int32_t target_angle=0;	//angle à atteindre
 
-volatile int32_t Kp_dist=0;
-volatile int32_t Kp_angle=0;
+volatile uint32_t Kp_dist=0;
+volatile uint32_t Kp_angle=0;
 
-volatile int32_t Kd_dist=0;
-volatile int32_t Kd_angle=0;
+volatile uint32_t Kd_dist=0;
+volatile uint32_t Kd_angle=0;
 
 volatile int32_t err_dist=0;
 volatile int32_t err_angle=0;
@@ -57,11 +57,6 @@ void asserv_setup()
 	TIMSK1 = (1 << OCIE1A);//enable interrupt sur comparaison réussie
 }
 
-void asserve_printDebug()
-{
-
-}
-
 void asserv_enable()
 {
 	asserv_enabled=true;
@@ -79,7 +74,7 @@ static void wait_for_asserve()
 	}
 }
 
-void asserv_setCoeffDist(int32_t new_Kp_dist,int32_t new_Kd_dist)
+void asserv_setCoeffDist(uint32_t new_Kp_dist,uint32_t new_Kd_dist)
 {
 	bool enable_save = asserv_enabled;
 	asserv_disable();
@@ -90,7 +85,13 @@ void asserv_setCoeffDist(int32_t new_Kp_dist,int32_t new_Kd_dist)
 		asserv_enable();
 }
 
-void asserv_setCoeffAngle(int32_t new_Kp_angle,int32_t new_Kd_angle)
+void asserv_getCoeffDist(uint32_t * Kp, uint32_t * Kd)
+{
+	*Kp=Kp_dist;
+	*Kd=Kd_dist;
+}
+
+void asserv_setCoeffAngle(uint32_t new_Kp_angle,uint32_t new_Kd_angle)
 {
 	bool enable_save = asserv_enabled;
 	asserv_disable();
@@ -99,6 +100,12 @@ void asserv_setCoeffAngle(int32_t new_Kp_angle,int32_t new_Kd_angle)
 	Kd_angle=new_Kd_angle;
 	if(enable_save)
 		asserv_enable();
+}
+
+void asserv_getCoeffAngle(uint32_t * Kp, uint32_t * Kd)
+{
+	*Kp=Kp_angle;
+	*Kd=Kd_angle;
 }
 
 void asserv_setAccMaxDist(uint32_t new_acc_max)

@@ -7,6 +7,7 @@
 // valeurs de réglage
 volatile double ticks_per_meters=0;
 volatile double ticks_per_rads=0;
+volatile double offset_angle;
 
 //valeurs de fonctionnement
 volatile bool mutex_odo_is_running=0;
@@ -40,6 +41,36 @@ void odo_disable()
 	odo_enabled=false;
 }
 
+void odo_setX(double new_x)
+{
+	odo_disable();
+	wait_for_odo();
+	odo_X=new_x;
+	odo_enable();
+}
+
+void odo_setY(double new_y)
+{
+	odo_disable();
+	wait_for_odo();
+	odo_Y=new_y;
+	odo_enable();
+}
+
+void odo_setAngle(double new_angle)
+{
+	odo_disable();
+	wait_for_odo();
+
+	int32_t dist_right=coderRight.count;
+	int32_t dist_left=coderLeft.count;
+	int32_t new_angle_tick=dist_right-dist_left;
+	double real_angle = new_angle_tick/ticks_per_rads;
+
+	offset_angle=new_angle-real_angle;
+	odo_enable();
+}
+
 static void wait_for_odo()
 {
 	while (mutex_odo_is_running)
@@ -62,6 +93,10 @@ int32_t odo_rads2ticks(double rads)
 void odo_update()
 {
 
+	if (!odo_enabled)
+		return;
+
+	mutex_odo_is_running = 1;
 	static int32_t old_dist_tick = 0;
 
 	int32_t dist_right=coderRight.count;
@@ -72,7 +107,7 @@ void odo_update()
 
 	double delta_dist=((double)(new_dist_tick-old_dist_tick))/ticks_per_meters;
 
-	odo_angle = new_angle_tick/ticks_per_rads;
+	odo_angle =offset_angle+ new_angle_tick/ticks_per_rads;
 
 	double dX = cos(odo_angle) * delta_dist;
 	double dY = sin(odo_angle) * delta_dist;
@@ -81,4 +116,5 @@ void odo_update()
 	odo_Y += dY;
 
 	old_dist_tick=new_dist_tick;
+	mutex_odo_is_running = 0;
 }

@@ -69,7 +69,7 @@ bool cmd_cb_goto()
 	return nav_gotoPoint(goto_x,goto_y,goto_delta);
 }
 
-void cmd_goto(int16_t new_x, int16_t new_y, int16_t delta_max)
+void cmd_goto(int32_t new_x, int32_t new_y, int32_t delta_max)
 {
 	cmd_callback=cmd_cb_goto;
 	cmd_callback_ack=cmd_cb_goto;
@@ -105,6 +105,24 @@ void cmd_getStatus(uint8_t * data)
 
 	data[0]=block_flags | (cb<<4);
 }
+
+void cmd_getKpKdLin(uint8_t * data)
+{
+	uint32_t kp;
+	uint32_t kd;
+	asserv_getCoeffDist(&kp,&kd);
+	SPLITUINT32T(kp,data,0);
+	SPLITUINT32T(kd,data,4);
+}
+void cmd_getKpKdRot(uint8_t * data)
+{
+	uint32_t kp;
+	uint32_t kd;
+	asserv_getCoeffAngle(&kp,&kd);
+	SPLITUINT32T(kp,data,0);
+	SPLITUINT32T(kd,data,4);
+}
+
 
 void cmd_reboot()
 {

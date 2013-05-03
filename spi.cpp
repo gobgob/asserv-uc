@@ -2,6 +2,8 @@
 #include "spi.h"
 #include "spi_buffer.h"
 #include "spi_frame.h"
+#include "asserv.h"
+#include "odo.h"
 
 
 void spi_setup()
@@ -62,7 +64,15 @@ static void spi_sendData(int type, uint8_t * data,int size)
 		Serial.println("Error while putting data in send buffer");
 }
 
-
+#include <stdarg.h>
+void p(char *fmt, ... ){
+        char tmp[128]; // resulting string limited to 128 chars
+        va_list args;
+        va_start (args, fmt );
+        vsnprintf(tmp, 128, fmt, args);
+        va_end (args);
+        Serial.print(tmp);
+}
 
 void spi_process()
 {
@@ -94,9 +104,9 @@ void spi_process()
 						break;
 					case GOTO:
 						cmd_goto(
-							MAKEINT16T(data[1],data[2]), \
-							MAKEINT16T(data[3],data[4]), \
-							MAKEINT16T(data[5],data[6]) \
+							MAKEINT32T(data[1],data[2],data[3],data[4]), \
+							MAKEINT32T(data[5],data[6],data[7],data[8]), \
+							MAKEINT32T(data[9],data[10],data[11],data[12]) \
 							);
 						break;
 					default:
@@ -108,6 +118,16 @@ void spi_process()
 			case GETTER:
 				switch(data[0])
 				{
+					case KPKD_LIN:
+						data[0]=KPKD_LIN;
+						cmd_getKpKdLin(data+1);
+						spi_sendData(GETTER,data,9);
+					break;
+					case KPKD_ROT:
+						data[0]=KPKD_ROT;
+						cmd_getKpKdRot(data+1);
+						spi_sendData(GETTER,data,9);
+					break;
 					case ODO:
 						data[0]=ODO;
 						cmd_getOdo(data+1);
@@ -119,11 +139,36 @@ void spi_process()
 						cmd_getStatus(data+1);
 						spi_sendData(GETTER,data,2);
 					break;
+				}
+				break;
+
+			case SETTER:
+				switch(data[0])
+				{
+					case KPKD_LIN:
+						asserv_setCoeffDist(
+							MAKEUINT32T(data[1],data[2],data[3],data[4]),
+							MAKEUINT32T(data[5],data[6],data[7],data[8])
+							);
+						break;
+					case KPKD_ROT:
+						asserv_setCoeffAngle(
+							MAKEUINT32T(data[1],data[2],data[3],data[4]),
+							MAKEUINT32T(data[5],data[6],data[7],data[8])
+							);
+						break;
+					case ODO:
+						if(data[1]&SET_ODO_X)
+							odo_setX(MAKEINT32T(data[2],data[3],data[4],data[5])/1000.);
+						if(data[1]&SET_ODO_Y)
+							odo_setY(MAKEINT32T(data[6],data[7],data[8],data[9])/1000.);
+						if(data[1]&SET_ODO_ANGLE)
+							odo_setAngle((double)MAKEINT32T(data[10],data[11],data[12],data[13])/10000);
+						break;
 					default:
 					;
 				}
 				break;
-
 			case REBOOT:
 				spi_sendAck();
 				cmd_reboot();	
