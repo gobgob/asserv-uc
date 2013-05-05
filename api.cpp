@@ -18,13 +18,13 @@ bool (*cmd_callback_ack)()=NULL;
 // float cmd_start_odo_Y = 0;
 int32_t cmd_start_dist = 0;
 int32_t cmd_end_dist = 0; 
-int32_t cmd_end_angle = 0; 
+double cmd_end_angle = 0; 
 unsigned long cmd_start_time;
 
 bool cmd_cb_goForwardOrBackward()
 {
-	//Serial.println("cmd_cb_goForward()");
-	return ((cmd_end_dist-dist)<=odo_meters2ticks(ACK_DIST));
+	int ret = (abs(cmd_end_dist-dist)<=odo_meters2ticks(ACK_DIST));
+	return ret;
 }
 
 void cmd_goForwardOrBackward(uint16_t rel_dist,int8_t sign)
@@ -41,18 +41,34 @@ void cmd_goForwardOrBackward(uint16_t rel_dist,int8_t sign)
 bool cmd_cb_rotate()
 {	
 	//Serial.println("cmd_cb_rotate()");
-	return ((cmd_end_angle-angle)<=odo_rads2ticks(ACK_ANGLE));
+	return (abs(cmd_end_angle-odo_angle)<=ACK_ANGLE);
 }
 
-void cmd_rotate(int16_t rel_angle)
+void cmd_rotate(int32_t n_angle, uint8_t isAbs)
 {
 	//Serial.println("cmd_rotate ");
 	cmd_callback_ack=cmd_cb_rotate;
 
 	//Serial.println(rel_angle);
-	int32_t angle_to_parcour = odo_rads2ticks(rel_angle/1000.);
-	cmd_end_angle = angle+angle_to_parcour; 
-	asserv_setTarget(0,angle_to_parcour,DEST_REL|ANGL_REL);
+	double n_angle_rad=n_angle/1000.;
+
+	if(isAbs)
+	{
+		// Serial.println("IS ABS");
+		// delay(4000);
+		n_angle_rad=closest_equivalent_angle(odo_angle,n_angle_rad);
+		double diff = n_angle_rad-odo_angle;
+		int32_t angle_to_parcour = odo_rads2ticks(diff);
+		cmd_end_angle = n_angle_rad;
+		asserv_setTarget(0,angle_to_parcour,DEST_REL|ANGL_REL); 
+	}else{
+		// Serial.println("IS NOT ABS");
+		// delay(4000);
+		int32_t angle_to_parcour = odo_rads2ticks(n_angle_rad);
+		cmd_end_angle = odo_angle+n_angle_rad; 
+		asserv_setTarget(0,angle_to_parcour,DEST_REL|ANGL_REL);
+	}
+
 }
 
 

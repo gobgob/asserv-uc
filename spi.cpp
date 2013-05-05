@@ -100,7 +100,10 @@ void spi_process()
 						cmd_goForwardOrBackward(MAKEUINT16T(data[1],data[2]),-1);
 						break;
 					case ROTATE:
-						cmd_rotate(MAKEINT16T(data[1],data[2]));
+						cmd_rotate(
+							MAKEINT32T(data[1],data[2],data[3],data[4]),\
+							data[5]
+							);
 						break;
 					case GOTO:
 						cmd_goto(
