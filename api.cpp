@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "spi.h"
 #include "navigation.h"
+#include "coders.h"
 
 #include <avr/io.h>
 #include <avr/wdt.h>
@@ -14,8 +15,6 @@ bool (*cmd_callback_ack)()=NULL;
 
 ///////////////////////_goForward
 
-// float cmd_start_odo_X = 0;
-// float cmd_start_odo_Y = 0;
 int32_t cmd_start_dist = 0;
 int32_t cmd_end_dist = 0; 
 double cmd_end_angle = 0; 
@@ -31,6 +30,7 @@ void cmd_goForwardOrBackward(uint16_t rel_dist,int8_t sign)
 {
 	//Serial.println("cmd_goForward ");
 	cmd_callback_ack=cmd_cb_goForwardOrBackward;
+	cmd_callback=NULL;
 	cmd_start_dist = dist;
 	int32_t dist_to_parcour = sign*odo_meters2ticks(rel_dist/1000.);
 	cmd_end_dist = dist + dist_to_parcour;
@@ -40,36 +40,32 @@ void cmd_goForwardOrBackward(uint16_t rel_dist,int8_t sign)
 
 bool cmd_cb_rotate()
 {	
-	//Serial.println("cmd_cb_rotate()");
 	return (abs(cmd_end_angle-odo_angle)<=ACK_ANGLE);
 }
 
 void cmd_rotate(int32_t n_angle, uint8_t isAbs)
 {
-	//Serial.println("cmd_rotate ");
 	cmd_callback_ack=cmd_cb_rotate;
+	cmd_callback=NULL;
 
-	//Serial.println(rel_angle);
 	double n_angle_rad=n_angle/1000.;
 
 	if(isAbs)
 	{
-		// Serial.println("IS ABS");
-		// delay(4000);
 		n_angle_rad=closest_equivalent_angle(odo_angle,n_angle_rad);
 		double diff = n_angle_rad-odo_angle;
 		int32_t angle_to_parcour = odo_rads2ticks(diff);
 		cmd_end_angle = n_angle_rad;
 		asserv_setTarget(0,angle_to_parcour,DEST_REL|ANGL_REL); 
 	}else{
-		// Serial.println("IS NOT ABS");
-		// delay(4000);
 		int32_t angle_to_parcour = odo_rads2ticks(n_angle_rad);
 		cmd_end_angle = odo_angle+n_angle_rad; 
 		asserv_setTarget(0,angle_to_parcour,DEST_REL|ANGL_REL);
 	}
 
 }
+
+
 
 
 
@@ -82,7 +78,9 @@ bool cmd_cb_goto()
 	// Serial.println(goto_x);
 	// Serial.println(goto_y);
 	// Serial.println(goto_delta);
-	return nav_gotoPoint(goto_x,goto_y,goto_delta);
+	int res = nav_gotoPoint(goto_x,goto_y,goto_delta);
+	// Serial.println(res);
+	return res;
 }
 
 void cmd_goto(int32_t new_x, int32_t new_y, int32_t delta_max)
@@ -139,6 +137,11 @@ void cmd_getKpKdRot(uint8_t * data)
 	SPLITUINT32T(kd,data,4);
 }
 
+void cmd_getTicks(uint8_t * data)
+{
+	SPLITINT32T(coderRight.count,data,0);
+	SPLITINT32T(coderLeft.count,data,4);
+}
 
 void cmd_reboot()
 {

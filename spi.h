@@ -28,6 +28,7 @@ void spi_setup();
 #define TICK_RATIO 4
 #define ODO 4
 #define STATUS 5
+#define TICKS 6
 
 
 // Define Args Functions

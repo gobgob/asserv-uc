@@ -48,4 +48,6 @@
 #define ACK_DIST	0.01 //en m
 #define ACK_ANGLE	0.02 //en rad
 
+#define DIST_WHEEL2CENTER	0.095//en m
+
 #endif

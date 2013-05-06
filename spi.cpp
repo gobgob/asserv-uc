@@ -125,23 +125,27 @@ void spi_process()
 						data[0]=KPKD_LIN;
 						cmd_getKpKdLin(data+1);
 						spi_sendData(GETTER,data,9);
-					break;
+						break;
 					case KPKD_ROT:
 						data[0]=KPKD_ROT;
 						cmd_getKpKdRot(data+1);
 						spi_sendData(GETTER,data,9);
-					break;
+						break;
 					case ODO:
 						data[0]=ODO;
 						cmd_getOdo(data+1);
 						spi_sendData(GETTER,data,13);
-					break;
+						break;
 					case STATUS:
 						data[0]=STATUS;
-						//data[1]=0;
 						cmd_getStatus(data+1);
 						spi_sendData(GETTER,data,2);
-					break;
+						break;
+					case TICKS:
+						data[0]=TICKS;
+						cmd_getTicks(data+1);
+						spi_sendData(GETTER,data,9);
+						break;
 				}
 				break;
 

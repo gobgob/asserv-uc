@@ -27,11 +27,9 @@ void setup()
 	asserv_setSpeedMaxAngle(90000);
 	asserv_setTarget(0,0,ABS);
 
-	odo_setTickRatio(1420.06472492,265.868332435);
+	odo_setTickRatio(1420.06472492,269.735797552);
 	odo_enable();
 	asserv_enable();
-
-
 	//cmd_goForward(200);
 
 }
@@ -73,12 +71,14 @@ void loop()
 	if(cmd_callback)
 	{
 		int cb = cmd_callback();
+		if (cb)
+			cmd_callback=NULL;
 		// Serial.print("cmd_callback=");
 		// Serial.println(cb);
 	}
 
 static unsigned long old = 0;
-	if( millis() - old > 300 )
+	if( millis() - old > 400 )
 	{
 		Serial.println("");
 		Serial.print("coderLeft.count=");

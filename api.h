@@ -17,4 +17,6 @@ void cmd_reboot();
 void cmd_getKpKdLin(uint8_t * data);
 void cmd_getKpKdRot(uint8_t * data);
 
+void cmd_getTicks(uint8_t * data);
+
 #endif
