@@ -41,11 +41,11 @@
 
 #define ZONE_51	6
 #define BLOCK_CMD_DETECT_MIN	((int32_t)(30))
-#define BLOCK_DURATION_MIN	((int32_t)(1000)) //ms
+#define BLOCK_DURATION_MIN	((int32_t)(500)) //ms
 #define BLOCK_DURATION_LOOP_COUNT ((int32_t)((BLOCK_DURATION_MIN*PID_FREQ)/1000))
 
 
-#define ACK_DIST	0.01 //en m
+#define ACK_DIST	0.02 //en m
 #define ACK_ANGLE	0.02 //en rad
 
 #define DIST_WHEEL2CENTER	0.095//en m
