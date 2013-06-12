@@ -13,4 +13,7 @@
 #define DEFAULT_TICK_PER_METERS (1420.06472492)
 #define DEFAULT_TICK_PER_RADS (269.735797552)
 
+//refresh frequency of the PID and odometry, in Hz
+#define REFRESH_FREQ 1000
+
 #endif
