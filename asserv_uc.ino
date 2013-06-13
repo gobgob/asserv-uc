@@ -8,6 +8,8 @@ Encoder coderLeft(CODER_L_A,CODER_L_B);
 Encoder coderRight(CODER_R_A,CODER_R_B);
 IntervalTimer timer;
 
+static void refreshStatus();
+
 void setup()
 {
 	pinMode(DEBUG_PIN_GENERAL,OUTPUT);
@@ -29,7 +31,7 @@ void loop()
 	delay(300);
 }
 
-void refreshStatus()
+static void refreshStatus()
 {
 	DEBUG_PIN_ON;
 	odo_update();
