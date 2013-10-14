@@ -13,6 +13,8 @@
 #define pythagore(x,y)	sqrt((x)*(x)+(y)*(y))
 
 void myPrintf(char *fmt, ... );
+int32_t maximizeDiff(int32_t oldValue, int32_t newValue, int32_t diffMax);
+int32_t maximize(int32_t value, int32_t diffMax);
 
 #define DUMP_VAR(x)		\
 {						\
