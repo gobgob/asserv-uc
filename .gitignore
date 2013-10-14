@@ -10,8 +10,13 @@
 *.so
 *.so.*
 *.dylib
+*.hex
+*.elf
 
 # Executables
 *.exe
 *.out
 *.app
+
+#folders
+arduino*
