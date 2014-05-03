@@ -5,6 +5,7 @@
 #include "odometry.h"
 #include "asserv.h"
 #include "hbridge.h"
+#include "navigation.h"
 
 Encoder coderLeft(CODER_L_A,CODER_L_B);
 Encoder coderRight(CODER_R_A,CODER_R_B);
@@ -25,10 +26,10 @@ void setup()
 	motorRight.setup();
 	motorLeft.setup();
 	
-	asserv_setCoeffDist(1*102,0);
-	asserv_setCoeffAngle(1*102,0);
-	asserv_setSpeedMaxDist(90000);
-	asserv_setSpeedMaxAngle(90000);
+	asserv_setCoeffDist(1*9000,0);
+	asserv_setCoeffAngle(1*10000,0);
+	asserv_setSpeedMaxDist(900000);
+	asserv_setSpeedMaxAngle(900000);
 	asserv_setTarget(0,0,ABS);
 
 	odo_enable();
@@ -39,14 +40,19 @@ void loop()
 {
 	//DUMP_VAR(coderLeft.read());
 	//DUMP_VAR(coderRight.read());
-	DUMP_VAR(odo_X);
-	DUMP_VAR(odo_Y);
-	DUMP_VAR(odo_angle);
+	DUMP_VAR(odo_X*1000);
+	DUMP_VAR(odo_Y*1000);
+	//DUMP_VAR(odo_angle);
 	// DUMP_VAR(coderLeft.read());
 	// DUMP_VAR(coderRight.read());
+	// DUMP_VAR(motorRight.getSpeed());
+	// DUMP_VAR(motorLeft.getSpeed());
 	delay(100);
+
+	nav_gotoPoint(0.4,0.4,0.03);
 	// motorLeft.setSpeed(100);
 	// motorRight.setSpeed(200);
+
 
 
 	//delay(300);

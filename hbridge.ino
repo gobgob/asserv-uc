@@ -14,6 +14,7 @@ void HBridge::setup()
 	pinMode(dirPin, OUTPUT);
 	pinMode(brakePin, OUTPUT);
 	digitalWrite(brakePin,LOW);
+	analogWriteFrequency(pwmPin, PWM_FREQ);
 }
 
 void HBridge::setSpeed(int32_t newSpeed)
