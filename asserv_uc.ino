@@ -6,6 +6,7 @@
 #include "asserv.h"
 #include "hbridge.h"
 #include "navigation.h"
+#include "i2c.h"
 
 Encoder coderLeft(CODER_L_A,CODER_L_B);
 Encoder coderRight(CODER_R_A,CODER_R_B);
@@ -21,6 +22,7 @@ void setup()
 	pinMode(DEBUG_PIN_GENERAL,OUTPUT);
 
 	Serial.begin(115200);
+	i2c_init();
 	timer.begin(refreshStatus, 1000000/REFRESH_FREQ);
 
 	motorRight.setup();
@@ -49,7 +51,7 @@ void loop()
 	// DUMP_VAR(motorLeft.getSpeed());
 	delay(100);
 
-	nav_gotoPoint(0.4,0.4,0.03);
+	//nav_gotoPoint(0.4,0.4,0.03);
 	// motorLeft.setSpeed(100);
 	// motorRight.setSpeed(200);
 

@@ -36,6 +36,11 @@
 //Avoid useless "biiiiiiiiiii" from the motors when to pwm is to low to make it move
 #define ZONE_51	0
 
+#define ACK_DIST	0.02 //en m
+#define ACK_ANGLE	0.02 //en rad
+
 #define DIST_WHEEL2CENTER (0.055)
+
+#define I2C_ADDR	0x42
 
 #endif
