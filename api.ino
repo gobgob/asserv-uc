@@ -36,15 +36,17 @@ void cmd_move(uint32_t rel_dist,int8_t sign)
 
 bool cmd_cb_rotate()
 {	
+	//DUMP_VAR(abs(cmd_end_angle-odo_angle));
+	//DUMP_VAR(ACK_ANGLE);
 	return (abs(cmd_end_angle-odo_angle)<=ACK_ANGLE);
 }
 
-void cmd_rotate(int32_t angle,uint8_t isAbs)
+void cmd_rotate(double angle,int8_t isAbs)
 {
 	cmd_callback_ack=cmd_cb_rotate;
 	cmd_callback=NULL;
 
-	double n_angle_rad=angle/1000.;
+	double n_angle_rad=angle;
 
 	if(isAbs)
 	{
@@ -61,36 +63,29 @@ void cmd_rotate(int32_t angle,uint8_t isAbs)
 
 }
 
-void cmd_setOdo(int32_t x,int32_t y,int32_t angle,int8_t flag)
+void cmd_setOdo(int32_t x,int32_t y,double angle,int8_t flag)
 {
-	if(flag&SET_ODO_X)
+	if(flag&SET_ODO_X){
 		odo_setX(x/1000.);
+	}
 
-	if(flag&SET_ODO_Y)
+	if(flag&SET_ODO_Y){
 		odo_setY(y/1000.);
+	}
 
-	if(flag&SET_ODO_ANGLE)
-		odo_setAngle((double)angle/10000);
+	if(flag&SET_ODO_ANGLE){
+		odo_setAngle((double)angle);
+	}
 }
 
-void cmd_setDistKpKd(int32_t kp,int32_t kd)
+void cmd_setDistKpKd(uint32_t kp,uint32_t kd)
 {
-// 	asserv_setCoeffDist(
-// 	MAKEUINT32T(data[1],data[2],data[3],data[4]),
-// 	MAKEUINT32T(data[5],data[6],data[7],data[8])
-// 	);
-// break;
-
+	asserv_setCoeffDist(kp,kd);
 }
 
-void cmd_setRotKpKd(int32_t kp,int32_t kd)
+void cmd_setRotKpKd(uint32_t kp,uint32_t kd)
 {
-// case KPKD_ROT:
-// asserv_setCoeffAngle(
-// 	MAKEUINT32T(data[1],data[2],data[3],data[4]),
-// 	MAKEUINT32T(data[5],data[6],data[7],data[8])
-// 	);
-// break;
+	asserv_setCoeffAngle(kp,kd);
 }
 
 double goto_x=0; 
@@ -123,48 +118,42 @@ void cmd_goto(int32_t new_x, int32_t new_y, int32_t delta_max)
 
 
 ///////////////////////getter
-void cmd_getOdo(uint8_t * data)
+void cmd_getPosition(int32_t* x,int32_t* y,double* angle)
 {
-	int32_t x = odo_X*1000;
-	int32_t y = odo_Y*1000;
-	int32_t a = odo_angle*1000;
-	SPLITINT32T(x,data,0);
-	SPLITINT32T(y,data,4);
-	SPLITINT32T(a,data,8);
+	*x = (int32_t)(odo_X*1000);
+	*y = (int32_t)(odo_Y*1000);
+	*angle = (double)(odo_angle);
 }
 
-void cmd_getStatus(uint8_t * data)
+void cmd_getStatus(int8_t* bfr,int8_t* bfl,int8_t* bbr,int8_t* bbl,int8_t* cmdhack)
 {
-	int cb = 0;
+	*cmdhack = 0;
 	if(cmd_callback_ack)
 	{
-		cb = cmd_callback_ack();
+		//DUMP_VAR(cmd_callback_ack());
+		*cmdhack = cmd_callback_ack();
 	}
-
-	data[0]=block_flags | (cb<<4);
+	*bfr = 1;
+	*bfl = 2;
+	*bbr = 3;
+	*bbl = 4;
+	//*cmdhack = 1;
 }
 
-void cmd_getKpKdLin(uint8_t * data)
+void cmd_getDistKpKd(uint32_t* kp,uint32_t* kd)
 {
-	uint32_t kp;
-	uint32_t kd;
-	asserv_getCoeffDist(&kp,&kd);
-	SPLITUINT32T(kp,data,0);
-	SPLITUINT32T(kd,data,4);
+	asserv_getCoeffDist(kp,kd);
 }
-void cmd_getKpKdRot(uint8_t * data)
+
+void cmd_getRotKpKd(uint32_t* kp,uint32_t* kd)
 {
-	uint32_t kp;
-	uint32_t kd;
-	asserv_getCoeffAngle(&kp,&kd);
-	SPLITUINT32T(kp,data,0);
-	SPLITUINT32T(kd,data,4);
+	asserv_getCoeffAngle(kp,kd);
 }
 
 void cmd_getTicks(uint8_t * data)
 {
-	SPLITINT32T(coderRight.read(),data,0);
-	SPLITINT32T(coderLeft.read(),data,4);
+	// SPLITINT32T(coderRight.read(),data,0);
+	// SPLITINT32T(coderLeft.read(),data,4);
 }
 
 void cmd_reboot()
