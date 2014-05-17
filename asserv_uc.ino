@@ -51,6 +51,8 @@ void loop()
 	// DUMP_VAR(motorLeft.getSpeed());
 	delay(100);
 
+	print_i2c_status();
+	delay(1000);
 	//nav_gotoPoint(0.4,0.4,0.03);
 	// motorLeft.setSpeed(100);
 	// motorRight.setSpeed(200);
@@ -58,6 +60,19 @@ void loop()
 
 
 	//delay(300);
+}
+
+void print_i2c_status(void)
+{
+    switch(Wire.status())
+    {
+    case I2C_WAITING:  Serial.print("I2C waiting, no errors\n"); break;
+    case I2C_ADDR_NAK: Serial.print("Slave addr not acknowledged\n"); break;
+    case I2C_DATA_NAK: Serial.print("Slave data not acknowledged\n"); break;
+    case I2C_ARB_LOST: Serial.print("Bus Error: Arbitration Lost\n"); break;
+    default:           Serial.print("I2C busy\n"); break;
+    }
+
 }
 
 static void refreshStatus()
