@@ -61,11 +61,18 @@ void i2c_receiveEvent(size_t len)
 //
 // handle Tx Event (outgoing I2C data)
 //
+
+
 void i2c_requestEvent(void)
 {
-	Serial.println("requestEvent");
-	// for(int i=0;i<data_out_len;i++){
-	// 	DUMP_VAR(data_out[i]);		
-	// }
-	Wire.write((uint8_t *)data_out, data_out_len); // fill Tx buffer (from addr location to end of mem)
+uint8_t checksum=0;
+
+	//Serial.println("requestEvent");
+	for(int i=0;i<data_out_len;i++){
+		// data_out[i]=0
+		checksum^=data_out[i];
+		Wire.write(data_out[i]);
+	}
+	Wire.write(checksum);
+	//Wire.write((uint8_t *)data_out, data_out_len); // fill Tx buffer (from addr location to end of mem)
 }
