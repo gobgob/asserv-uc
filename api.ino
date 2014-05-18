@@ -133,10 +133,10 @@ void cmd_getStatus(int8_t* bfr,int8_t* bfl,int8_t* bbr,int8_t* bbl,int8_t* cmdha
 		//DUMP_VAR(cmd_callback_ack());
 		*cmdhack = cmd_callback_ack();
 	}
-	*bfr = 1;
-	*bfl = 2;
-	*bbr = 3;
-	*bbl = 4;
+	*bfr = 0;
+	*bfl = 0;
+	*bbr = 0;
+	*bbl = 0;
 	//*cmdhack = 1;
 }
 
@@ -150,10 +150,11 @@ void cmd_getRotKpKd(uint32_t* kp,uint32_t* kd)
 	asserv_getCoeffAngle(kp,kd);
 }
 
-void cmd_getTicks(uint8_t * data)
+
+void cmd_getTicks(int32_t* left,int32_t* right)
 {
-	// SPLITINT32T(coderRight.read(),data,0);
-	// SPLITINT32T(coderLeft.read(),data,4);
+	*left=coderLeft.read();
+	*right=coderRight.read();
 }
 
 void cmd_reboot()
