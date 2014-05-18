@@ -31,10 +31,10 @@ void HBridge::setSpeed(int32_t newSpeed)
 
 	if (speed>0)
 	{
-		direction=0;
+		direction=1;
 		pwm=speed;
 	}else{
-		direction=1;
+		direction=0;
 		pwm=-speed;
 	}
 
