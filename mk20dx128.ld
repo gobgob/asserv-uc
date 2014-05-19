@@ -1,1 +1,0 @@
-arduino-1.0.5/hardware/teensy/cores/teensy3/mk20dx128.ld
