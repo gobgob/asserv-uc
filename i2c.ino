@@ -1,4 +1,3 @@
-#include <i2c_t3.h>
 #include "i2c.h"
 #include "config.h"
 #include "api.h"
@@ -17,62 +16,97 @@ volatile int i2c_reg;
 
 void i2c_init()
 {
-	// Setup for Slave mode, address 0x44, pins 18/19, external pullups, 400kHz
-	Wire.begin(
-		I2C_SLAVE,
-		I2C_ADDR,
-		I2C_PINS_18_19,
-		I2C_PULLUP_EXT,
-		I2C_RATE_400
-		);
-
-	// register events
-	Wire.onReceive(i2c_receiveEvent);
-	Wire.onRequest(i2c_requestEvent);
+	Serial.println("i2c_init");
+	Serial1.begin(115200);
 }
 
-void i2c_receiveEvent(size_t len)
+int myRead(uint8_t * checksum)
+{
+	int res = Serial1.read();
+	*checksum^=res;
+	return res;
+}
+
+void serial_process()
 {
 
 	int i;
+	int len;
+	uint8_t checksum=0;
 
+	static unsigned long cmd_time = 0;
+
+	//Serial.println("serial_process");
 	
-	if(Wire.available())
-	{
-		i2c_reg = Wire.readByte();
+	if(Serial1.available()>=3) {
+
+		if(myRead(&checksum)!=0xFF) {
+			Serial.println("bad synchronistation");
+			return;
+		}
+
+		i2c_reg = myRead(&checksum);
+		len = myRead(&checksum);
+		// DUMP_VAR(i2c_reg);
+		// DUMP_VAR(len);
+
+	}else{
+		return;
 	}
 	
-	if(Wire.available())
-	{
-		int len = Wire.readByte();
-	
-		for(i=0;i<len;i++)
-		{
-			if(Wire.available()) {
-			data_in[i]=Wire.readByte();
-			} else {
-			Serial.println("Really not good !");
-			}
-		}	 
+	cmd_time = millis();
+
+	//TODO : add timeout
+	while(Serial1.available()<len+1) {
+		//Serial.println("waiting");
+		if(millis()>(cmd_time+200)) {
+			Serial.println("timeout waiting");
+			return;
+		}
+		//wait
 	}
+
+	for(i=0;i<len;i++) {
+		data_in[i]=myRead(&checksum);
+		DUMP_VAR(data_in[i]);
+	}
+
+	uint8_t data_checksum=Serial1.read();
+
+	if (data_checksum!=checksum) {
+		Serial.println("bad checksum");
+		return;
+	}
+
 	i2c_runCmd(i2c_reg, (uint8_t *)data_in, (uint8_t *)data_out, (uint8_t *)&data_out_len);
-}
-
-//
-// handle Tx Event (outgoing I2C data)
-//
 
 
-void i2c_requestEvent(void)
-{
-uint8_t checksum=0;
-
-	//Serial.println("requestEvent");
-	for(int i=0;i<data_out_len;i++){
-		// data_out[i]=0
-		checksum^=data_out[i];
-		Wire.write(data_out[i]);
+	if(data_out_len>0) {
+		checksum=0;
+		for(int i=0;i<data_out_len;i++){
+			// data_out[i]=0
+			checksum^=data_out[i];
+			Serial1.write(data_out[i]);
+		}
+		Serial1.write(checksum);
+		data_out_len=0;
 	}
-	Wire.write(checksum);
-	//Wire.write((uint8_t *)data_out, data_out_len); // fill Tx buffer (from addr location to end of mem)
 }
+
+
+// //
+// // handle Tx Event (outgoing I2C data)
+// //
+// void i2c_requestEvent(void)
+// {
+// 	uint8_t checksum=0;
+
+// 	//Serial.println("requestEvent");
+// 	for(int i=0;i<data_out_len;i++){
+// 		// data_out[i]=0
+// 		checksum^=data_out[i];
+// 		Wire.write(data_out[i]);
+// 	}
+// 	Wire.write(checksum);
+// 	//Wire.write((uint8_t *)data_out, data_out_len); // fill Tx buffer (from addr location to end of mem)
+// }
