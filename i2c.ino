@@ -20,9 +20,9 @@ void i2c_init()
 	Serial1.begin(115200);
 }
 
-int myRead(uint8_t * checksum)
+uint8_t myRead(uint8_t * checksum)
 {
-	int res = Serial1.read();
+	uint8_t res = Serial1.read();
 	*checksum^=res;
 	return res;
 }
@@ -40,7 +40,9 @@ void serial_process()
 	
 	if(Serial1.available()>=3) {
 
-		if(myRead(&checksum)!=0xFF) {
+		char c = myRead(&checksum);
+		if(c!=0xFF) {
+			Serial.println(c,DEC);
 			Serial.println("bad synchronistation");
 			return;
 		}

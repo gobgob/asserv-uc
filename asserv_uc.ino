@@ -1,4 +1,5 @@
 #include <Encoder.h>
+#include <Servo.h>
 
 #include "config.h"
 #include "utils.h"
@@ -13,13 +14,21 @@ Encoder coderRight(CODER_R_A,CODER_R_B);
 HBridge motorLeft(MOTOR_L_PWM,MOTOR_L_DIR,MOTOR_L_BRAKE);
 HBridge motorRight(MOTOR_R_PWM,MOTOR_R_DIR,MOTOR_R_BRAKE);
 
+Servo servo[4];
+
 IntervalTimer timer;
+IntervalTimer timerRatatouille;
 
 static void refreshStatus();
 
 void setup()
 {
 	pinMode(DEBUG_PIN_GENERAL,OUTPUT);
+
+	// servo[1].attach(SERVO_1_PIN);
+	// servo[2].attach(SERVO_2_PIN);
+	// servo[3].attach(SERVO_3_PIN);
+	// servo[4].attach(SERVO_4_PIN);
 
 	Serial.begin(115200);
 	i2c_init();

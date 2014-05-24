@@ -46,7 +46,7 @@ double MAKEDOUBLE(uint8_t x,uint8_t y,uint8_t z,uint8_t t)
 
 #define SPLITDOUBLE(a,tab,offset) 					\
 {													\
-	SPLITINT32_T((uint32_t)(a*100000),tab,offset)	\
+	SPLITINT32_T((int32_t)(a*100000.),tab,offset);	\
 }
 
 #define SPLITINT32_T(a,tab,offset) 		\
@@ -57,7 +57,7 @@ double MAKEDOUBLE(uint8_t x,uint8_t y,uint8_t z,uint8_t t)
 	tab[3+offset] = (a>>0)&0x00ff;		\
 }
 
-#define SPLITUINT32_T(a,tab,offset) 		\
+#define SPLITUINT32_T(a,tab,offset) 	\
 {										\
 	tab[0+offset]=(a>>24);				\
 	tab[1+offset] = (a>>16)&0x00ff;		\
