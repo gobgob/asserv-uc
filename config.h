@@ -21,7 +21,7 @@
 #define MOTOR_R_SENSE	A0
 
 #define DEFAULT_TICK_PER_METERS (4798.0)
-#define DEFAULT_TICK_PER_RADS (4918.8)
+#define DEFAULT_TICK_PER_RADS (488.2159)
 
 //refresh frequency of the PID and odometry, in Hz
 #define REFRESH_FREQ 1000
