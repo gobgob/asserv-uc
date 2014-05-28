@@ -44,7 +44,10 @@ extern volatile int32_t angle;
 #define	BLOCK_BL	(1<<3)
 #define	CMD_HACK	(1<<4)
 
-extern	volatile uint8_t block_flags;
+extern volatile uint8_t block_flags_fr;
+extern volatile uint8_t block_flags_fl;
+extern volatile uint8_t block_flags_br;
+extern volatile uint8_t block_flags_bl;
 
 
 #endif

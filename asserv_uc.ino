@@ -1,5 +1,7 @@
 #include <Encoder.h>
 #include <Servo.h>
+#include <Ping.h>
+
 
 #include "config.h"
 #include "utils.h"
@@ -14,7 +16,11 @@ Encoder coderRight(CODER_R_A,CODER_R_B);
 HBridge motorLeft(MOTOR_L_PWM,MOTOR_L_DIR,MOTOR_L_BRAKE);
 HBridge motorRight(MOTOR_R_PWM,MOTOR_R_DIR,MOTOR_R_BRAKE);
 
-Servo servo[4];
+Servo servoNetRight;
+Servo servoNetLeft;
+Servo servoRatatouille;
+
+Ping ping = Ping(ULTRASOUND_PIN);
 
 IntervalTimer timer;
 IntervalTimer timerRatatouille;
@@ -25,10 +31,14 @@ void setup()
 {
 	pinMode(DEBUG_PIN_GENERAL,OUTPUT);
 
-	// servo[1].attach(SERVO_1_PIN);
-	// servo[2].attach(SERVO_2_PIN);
-	// servo[3].attach(SERVO_3_PIN);
-	// servo[4].attach(SERVO_4_PIN);
+	servoNetRight.attach(SERVO_NET_RIGHT);
+	servoNetLeft.attach(SERVO_NET_LEFT);
+	servoRatatouille.attach(SERVO_RATATOUILLE);
+	servoNetLeft.write(SERVO_NET_LEFT_ANGLE_IDLE);
+	servoNetRight.write(SERVO_NET_RIGHT_ANGLE_IDLE);
+	servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_IDLE);
+
+	Ping ping = Ping(ULTRASOUND_PIN);
 
 	Serial.begin(115200);
 	i2c_init();
@@ -49,7 +59,20 @@ void setup()
 
 void loop()
 {
+
 	serial_process();
+
+
+  	
+	// pinMode(ULTRASOUND_PIN,OUTPUT);
+	// digitalWrite(ULTRASOUND_PIN, HIGH); 
+	// delayMicroseconds(10); 
+	// digitalWrite(ULTRASOUND_PIN, LOW);
+	// pinMode(ULTRASOUND_PIN,OUTPUT);
+ //  	DUMP_VAR(pulseIn(ULTRASOUND_PIN, HIGH)); 
+
+
+
 	//DUMP_VAR(odo_angle);
 	// DUMP_VAR(coderLeft.read());
 	// DUMP_VAR(coderRight.read());

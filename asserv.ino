@@ -183,7 +183,44 @@ void asserv_run()
 
 
 
-	// asserv_control_blockages(cmd_right/1024, cmd_left/1024,speed_right, speed_left);
+	asserv_control_blockages(cmd_right/1024, cmd_left/1024,speed_right, speed_left);
 
 	mutex_asserve_is_running=false;
+}
+
+static volatile int32_t fr_count=0;
+static volatile int32_t br_count=0;
+static volatile int32_t fl_count=0;
+static volatile int32_t bl_count=0;
+volatile uint8_t block_flags_fr=0;
+volatile uint8_t block_flags_fl=0;
+volatile uint8_t block_flags_br=0;
+volatile uint8_t block_flags_bl=0;
+
+static void asserv_control_blockages(int32_t cmd_right, int32_t cmd_left,int32_t speed_right, int32_t speed_left)
+{
+	if(cmd_right>BLOCK_CMD_DETECT_MIN && speed_right<=1)
+			fr_count=MIN(BLOCK_DURATION_LOOP_COUNT,fr_count+1);
+	else
+		fr_count=0;
+
+	if(cmd_right<(-BLOCK_CMD_DETECT_MIN) && speed_right>=(-1))
+			br_count=MIN(BLOCK_DURATION_LOOP_COUNT,br_count+1);
+	else
+		br_count=0;
+
+	if(cmd_left>BLOCK_CMD_DETECT_MIN && speed_left<=1)
+			fl_count=MIN(BLOCK_DURATION_LOOP_COUNT,fl_count+1);
+	else
+		fl_count=0;
+
+	if(cmd_left<(-BLOCK_CMD_DETECT_MIN) && speed_left>=(-1))
+			bl_count=MIN(BLOCK_DURATION_LOOP_COUNT,bl_count+1);
+	else
+		bl_count=0;
+
+	(fr_count>=BLOCK_DURATION_LOOP_COUNT)?block_flags_fr=1:block_flags_fr=0;
+	(br_count>=BLOCK_DURATION_LOOP_COUNT)?block_flags_br=1:block_flags_br=0;
+	(fl_count>=BLOCK_DURATION_LOOP_COUNT)?block_flags_fl=1:block_flags_fl=0;
+	(bl_count>=BLOCK_DURATION_LOOP_COUNT)?block_flags_bl=1:block_flags_bl=0;
 }

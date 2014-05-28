@@ -41,7 +41,7 @@ double closest_equivalent_angle(double old_angle,double new_angle);
 
 double MAKEDOUBLE(uint8_t x,uint8_t y,uint8_t z,uint8_t t)
 {						
-	return ((double)(MAKEUINT32_T(x,y,z,t)))/100000.;
+	return ((double)(MAKEINT32_T(x,y,z,t)))/100000.;
 }									
 
 #define SPLITDOUBLE(a,tab,offset) 					\

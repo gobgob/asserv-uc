@@ -38,6 +38,7 @@ void HBridge::setSpeed(int32_t newSpeed)
 		pwm=-speed;
 	}
 
+	// DUMP_VAR(pwm);
 	analogWrite(pwmPin,pwm);
 	digitalWrite(dirPin,direction);
 }

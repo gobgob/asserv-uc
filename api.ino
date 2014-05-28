@@ -36,8 +36,10 @@ void cmd_move(uint32_t rel_dist,int8_t sign)
 
 bool cmd_cb_rotate()
 {	
-	//DUMP_VAR(abs(cmd_end_angle-odo_angle));
-	//DUMP_VAR(ACK_ANGLE);
+	// DUMP_VAR(abs(cmd_end_angle-odo_angle));
+	// DUMP_VAR(ACK_ANGLE);
+	// DUMP_VAR(cmd_end_angle);
+	// DUMP_VAR(odo_angle);
 	return (abs(cmd_end_angle-odo_angle)<=ACK_ANGLE);
 }
 
@@ -47,10 +49,11 @@ void cmd_rotate(double angle,int8_t isAbs)
 	cmd_callback=NULL;
 
 	double n_angle_rad=angle;
-
+	DUMP_VAR(n_angle_rad);
 	if(isAbs)
 	{
 		n_angle_rad=closest_equivalent_angle(odo_angle,n_angle_rad);
+		// DUMP_VAR(n_angle_rad);
 		double diff = n_angle_rad-odo_angle;
 		int32_t angle_to_parcour = odo_rads2ticks(diff);
 		cmd_end_angle = n_angle_rad;
@@ -133,10 +136,15 @@ void cmd_getStatus(int8_t* bfr,int8_t* bfl,int8_t* bbr,int8_t* bbl,int8_t* cmdha
 		//DUMP_VAR(cmd_callback_ack());
 		*cmdhack = cmd_callback_ack();
 	}
-	*bfr = 0;
-	*bfl = 0;
-	*bbr = 0;
-	*bbl = 0;
+	*bfr = block_flags_fr;
+	*bfl = block_flags_fl;
+	*bbr = block_flags_br;
+	*bbl = block_flags_bl;
+
+	DUMP_VAR(*bfr)
+	DUMP_VAR(*bfl)
+	DUMP_VAR(*bbr)
+	DUMP_VAR(*bbl)
 	//*cmdhack = 1;
 }
 
@@ -165,52 +173,61 @@ void cmd_setTicks(int32_t left,int32_t right)
 
 void cmd_setServo(uint8_t number,uint8_t angle)
 {
-	if (number<SERVO_COUNT) {
-		servo[number].write(angle);
-	}
+	// if (number<SERVO_COUNT) {
+	// 	servo[number].write(angle);
+	// }
 }
 
 void ratatouille_run()
 {
 	static int status=0;
 	if(status) {
-		servo[SERVO_RATATOUILLE_1].write(SERVO_RATATOUILLE_1_ANGLE_TOP);
-		servo[SERVO_RATATOUILLE_2].write(SERVO_RATATOUILLE_2_ANGLE_TOP);
+		servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_TOP);
 	}else{
-		servo[SERVO_RATATOUILLE_1].write(SERVO_RATATOUILLE_1_ANGLE_BOTTOM);
-		servo[SERVO_RATATOUILLE_2].write(SERVO_RATATOUILLE_2_ANGLE_BOTTOM);
+		servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_BOTTOM);
 	}
 	status=!status;
 }
 
 void ratatouille_stop()
 {
-	servo[SERVO_RATATOUILLE_1].write(SERVO_RATATOUILLE_1_ANGLE_IDLE);
-	servo[SERVO_RATATOUILLE_2].write(SERVO_RATATOUILLE_2_ANGLE_IDLE);
+	servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_IDLE);
 	timerRatatouille.end();
 }
 
-void cmd_ratatouille(int8_t run,uint16_t delay_ms)
+void cmd_ratatouille(int8_t run,uint32_t delay_ms)
 {
 	if (run) {
 		timerRatatouille.begin(ratatouille_run, 1000*delay_ms);
 	} else {
-		timerRatatouille.begin(ratatouille_stop, 1000*delay_ms);
+		timerRatatouille.begin(ratatouille_stop, 10);
 	}
 }
 
 void cmd_launchNet(int8_t left,int8_t right,int8_t reset)
 {
 	if (reset) {
-		servo[SERVO_NET_LEFT].write(SERVO_NET_LEFT_ANGLE_IDLE);
-		servo[SERVO_NET_RIGHT].write(SERVO_NET_RIGHT_ANGLE_IDLE);
+		servoNetLeft.write(SERVO_NET_LEFT_ANGLE_IDLE);
+		servoNetRight.write(SERVO_NET_RIGHT_ANGLE_IDLE);
 	}else{
 		if (left)
-			servo[SERVO_NET_LEFT].write(SERVO_NET_LEFT_ANGLE_IDLE);
+			servoNetLeft.write(SERVO_NET_LEFT_ANGLE_TRIGGER);
 		if (right)
-			servo[SERVO_NET_RIGHT].write(SERVO_NET_RIGHT_ANGLE_IDLE);
+			servoNetRight.write(SERVO_NET_RIGHT_ANGLE_TRIGGER);
 	}
 }
+
+
+void cmd_getUltrasounds(int32_t* dist){
+  	ping.fire();
+  	*dist = ping.centimeters();
+}
+
+void cmd_setTickRatio(double new_ticks_per_meters,double new_ticks_per_rads)
+{
+	odo_setTickRatio(new_ticks_per_meters,new_ticks_per_rads);
+}
+
 
 void cmd_reboot()
 {

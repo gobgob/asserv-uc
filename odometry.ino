@@ -27,8 +27,10 @@ void odo_setTickRatio(double new_ticks_per_meters,double new_ticks_per_rads)
 	boolean enable_save = odo_enabled;
 	odo_disable();
 	wait_for_odo();
-	ticks_per_meters=new_ticks_per_meters;
-	ticks_per_rads=new_ticks_per_rads;
+	if(new_ticks_per_meters>0)
+		ticks_per_meters=new_ticks_per_meters;
+	if(new_ticks_per_rads>0)
+		ticks_per_rads=new_ticks_per_rads;
 	if(enable_save)
 		odo_enable();
 }

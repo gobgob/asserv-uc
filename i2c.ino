@@ -70,7 +70,7 @@ void serial_process()
 
 	for(i=0;i<len;i++) {
 		data_in[i]=myRead(&checksum);
-		DUMP_VAR(data_in[i]);
+		// DUMP_VAR(data_in[i]);
 	}
 
 	uint8_t data_checksum=Serial1.read();

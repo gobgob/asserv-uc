@@ -58,6 +58,9 @@ double principal_angle(double angle)
 
 double closest_equivalent_angle(double old_angle,double new_angle)
 {
+	// DUMP_VAR(old_angle);
+	// DUMP_VAR(new_angle);
+	// DUMP_VAR(PI);
 	if(new_angle<=old_angle)
 	{
 		while(!(old_angle-PI<=new_angle && new_angle<old_angle+PI))
