@@ -228,7 +228,14 @@ void cmd_setTickRatio(double new_ticks_per_meters,double new_ticks_per_rads)
 	odo_setTickRatio(new_ticks_per_meters,new_ticks_per_rads);
 }
 
+void cmd_setBras(int8_t left,int8_t right)
+{
+	int diffleft = SERVO_BRAS_LEFT_LOW-SERVO_BRAS_LEFT_HIGH;
+	servoBrasLeft.write(SERVO_BRAS_LEFT_LOW-(left*diffleft)/100);
 
+	int diffright = SERVO_BRAS_RIGHT_LOW-SERVO_BRAS_RIGHT_HIGH;
+	servoBrasRight.write(SERVO_BRAS_RIGHT_LOW-(right*diffright)/100);
+}
 void cmd_reboot()
 {
 	//wdt_enable(WDTO_30MS);

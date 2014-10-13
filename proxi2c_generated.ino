@@ -19,6 +19,7 @@ enum i2c_registers
 	REG_RATATOUILLE=15,
 	REG_LAUNCHNET=16,
 	REG_SETTICKRATIO=17,
+	REG_SETBRAS=18,
 };
 
 void i2c_runCmd(int i2c_reg,uint8_t * data_in,uint8_t * data_out,uint8_t * data_out_len)
@@ -184,6 +185,13 @@ void i2c_runCmd(int i2c_reg,uint8_t * data_in,uint8_t * data_out,uint8_t * data_
 			cmd_setTickRatio( 
 			MAKEDOUBLE(data_in[0],data_in[1],data_in[2],data_in[3]),
 			MAKEDOUBLE(data_in[4],data_in[5],data_in[6],data_in[7]) 
+			);
+		break;
+		case REG_SETBRAS :
+		Serial.println("cmd_setBras");
+			cmd_setBras( 
+			MAKEINT8_T(data_in[0]),
+			MAKEINT8_T(data_in[1]) 
 			);
 		break;
 	};

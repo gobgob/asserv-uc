@@ -167,7 +167,9 @@ void asserv_run()
 	int32_t cmd_angle=err_angle*Kp_angle-Kd_angle*speed_angle;
 
 	cmd_dist=maximize(cmd_dist,speed_max_dist);
+	// DUMP_VAR(cmd_dist);
 	cmd_angle=maximize(cmd_angle,speed_max_angle);
+	// DUMP_VAR(cmd_angle);
 
 	int32_t cmd_right=cmd_dist+cmd_angle;
 	int32_t cmd_left=cmd_dist-cmd_angle;

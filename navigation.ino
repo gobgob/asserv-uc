@@ -39,16 +39,22 @@ int nav_gotoPoint(double new_x, double new_y, double delta_max)
 
 	double n_angle_rad = atan2(diff_y,diff_x);
 	n_angle_rad=closest_equivalent_angle(old_angle,n_angle_rad);
+	DUMP_VAR(n_angle_rad);
 	double diff = n_angle_rad-odo_angle;
+	DUMP_VAR(diff);
+	
 	// Serial.println("--");
 	// Serial.print(approx_dist,3);
 	// Serial.print(" ");
 	// Serial.println(delta_max,3);
+	DUMP_VAR(approx_dist);
+	DUMP_VAR(delta_max);
 	if(approx_dist>=delta_max)
 	{
+		// Serial.println("Here");
 		if(isIn8Zone(old_x,old_y,new_x,new_y,old_angle))
 		{
-			// Serial.println("ZONE 8 ============================");
+			Serial.println("ZONE 8 ============================");
 			asserv_setTarget(
 				0,
 				odo_rads2ticks(n_angle_rad),

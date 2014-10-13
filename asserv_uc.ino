@@ -10,6 +10,7 @@
 #include "hbridge.h"
 #include "navigation.h"
 #include "i2c.h"
+#include "api.h"
 
 Encoder coderLeft(CODER_L_A,CODER_L_B);
 Encoder coderRight(CODER_R_A,CODER_R_B);
@@ -19,6 +20,8 @@ HBridge motorRight(MOTOR_R_PWM,MOTOR_R_DIR,MOTOR_R_BRAKE);
 Servo servoNetRight;
 Servo servoNetLeft;
 Servo servoRatatouille;
+Servo servoBrasLeft;
+Servo servoBrasRight;
 
 Ping ping = Ping(ULTRASOUND_PIN);
 
@@ -34,9 +37,16 @@ void setup()
 	servoNetRight.attach(SERVO_NET_RIGHT);
 	servoNetLeft.attach(SERVO_NET_LEFT);
 	servoRatatouille.attach(SERVO_RATATOUILLE);
+
 	servoNetLeft.write(SERVO_NET_LEFT_ANGLE_IDLE);
 	servoNetRight.write(SERVO_NET_RIGHT_ANGLE_IDLE);
 	servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_IDLE);
+
+	servoBrasLeft.attach(SERVO_BRAS_LEFT);
+	servoBrasRight.attach(SERVO_BRAS_RIGHT);
+
+	servoBrasLeft.write(SERVO_BRAS_LEFT_IDLE);
+	servoBrasRight.write(SERVO_BRAS_RIGHT_IDLE);
 
 	Ping ping = Ping(ULTRASOUND_PIN);
 
@@ -49,8 +59,8 @@ void setup()
 	
 	asserv_setCoeffDist(1*9000,0);
 	asserv_setCoeffAngle(1*10000,0);
-	asserv_setSpeedMaxDist(900000);
-	asserv_setSpeedMaxAngle(900000);
+	asserv_setSpeedMaxDist(200000);
+	asserv_setSpeedMaxAngle(200000);
 	asserv_setTarget(0,0,ABS);
 
 	odo_enable();
@@ -62,6 +72,15 @@ void loop()
 
 	serial_process();
 
+	if(cmd_callback)
+	{
+		// delay(10);
+			// Serial.println("############################"); //dont remove
+		int cb = cmd_callback();
+		if (cb) {
+			cmd_callback=NULL;
+		}
+	}
 
   	
 	// pinMode(ULTRASOUND_PIN,OUTPUT);

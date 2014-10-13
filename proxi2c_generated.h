@@ -16,6 +16,7 @@ void cmd_setServo(uint8_t number,uint8_t angle);
 void cmd_ratatouille(int8_t run,uint32_t delay_ms);
 void cmd_launchNet(int8_t left,int8_t right,int8_t reset);
 void cmd_setTickRatio(double new_ticks_per_meters,double new_ticks_per_rads);
+void cmd_setBras(int8_t left,int8_t right);
 
 #define SET_ODO_X 1
 #define SET_ODO_Y 2
