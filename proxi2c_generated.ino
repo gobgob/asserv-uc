@@ -165,21 +165,6 @@ void i2c_runCmd(int i2c_reg,uint8_t * data_in,uint8_t * data_out,uint8_t * data_
 			MAKEUINT8_T(data_in[1]) 
 			);
 		break;
-		case REG_RATATOUILLE :
-		Serial.println("cmd_ratatouille");
-			cmd_ratatouille( 
-			MAKEINT8_T(data_in[0]),
-			MAKEUINT32_T(data_in[1],data_in[2],data_in[3],data_in[4]) 
-			);
-		break;
-		case REG_LAUNCHNET :
-		Serial.println("cmd_launchNet");
-			cmd_launchNet( 
-			MAKEINT8_T(data_in[0]),
-			MAKEINT8_T(data_in[1]),
-			MAKEINT8_T(data_in[2]) 
-			);
-		break;
 		case REG_SETTICKRATIO :
 		Serial.println("cmd_setTickRatio");
 			cmd_setTickRatio( 

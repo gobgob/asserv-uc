@@ -17,16 +17,12 @@ Encoder coderRight(CODER_R_A,CODER_R_B);
 HBridge motorLeft(MOTOR_L_PWM,MOTOR_L_DIR,MOTOR_L_BRAKE);
 HBridge motorRight(MOTOR_R_PWM,MOTOR_R_DIR,MOTOR_R_BRAKE);
 
-Servo servoNetRight;
-Servo servoNetLeft;
-Servo servoRatatouille;
 Servo servoBrasLeft;
 Servo servoBrasRight;
 
-Ping ping = Ping(ULTRASOUND_PIN);
+//Ping ping = Ping(ULTRASOUND_PIN);
 
 IntervalTimer timer;
-IntervalTimer timerRatatouille;
 
 static void refreshStatus();
 
@@ -34,21 +30,13 @@ void setup()
 {
 	pinMode(DEBUG_PIN_GENERAL,OUTPUT);
 
-	servoNetRight.attach(SERVO_NET_RIGHT);
-	servoNetLeft.attach(SERVO_NET_LEFT);
-	servoRatatouille.attach(SERVO_RATATOUILLE);
-
-	servoNetLeft.write(SERVO_NET_LEFT_ANGLE_IDLE);
-	servoNetRight.write(SERVO_NET_RIGHT_ANGLE_IDLE);
-	servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_IDLE);
-
 	servoBrasLeft.attach(SERVO_BRAS_LEFT);
 	servoBrasRight.attach(SERVO_BRAS_RIGHT);
 
 	servoBrasLeft.write(SERVO_BRAS_LEFT_IDLE);
 	servoBrasRight.write(SERVO_BRAS_RIGHT_IDLE);
 
-	Ping ping = Ping(ULTRASOUND_PIN);
+	//Ping ping = Ping(ULTRASOUND_PIN);
 
 	Serial.begin(115200);
 	i2c_init();
@@ -72,8 +60,7 @@ void loop()
 
 	serial_process();
 
-	if(cmd_callback)
-	{
+	if(cmd_callback) {
 		// delay(10);
 			// Serial.println("############################"); //dont remove
 		int cb = cmd_callback();
@@ -82,19 +69,9 @@ void loop()
 		}
 	}
 
-  	
-	// pinMode(ULTRASOUND_PIN,OUTPUT);
-	// digitalWrite(ULTRASOUND_PIN, HIGH); 
-	// delayMicroseconds(10); 
-	// digitalWrite(ULTRASOUND_PIN, LOW);
-	// pinMode(ULTRASOUND_PIN,OUTPUT);
- //  	DUMP_VAR(pulseIn(ULTRASOUND_PIN, HIGH)); 
-
-
-
-	//DUMP_VAR(odo_angle);
-	// DUMP_VAR(coderLeft.read());
-	// DUMP_VAR(coderRight.read());
+	// DUMP_VAR(odo_angle);
+	DUMP_VAR(coderLeft.read());
+	DUMP_VAR(coderRight.read());
 	// DUMP_VAR(motorRight.getSpeed());
 	// DUMP_VAR(motorLeft.getSpeed());
 	//nav_gotoPoint(0.4,0.4,0.03);
