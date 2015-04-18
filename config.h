@@ -1,14 +1,30 @@
 #ifndef CODER_H
 #define CODER_H
 
+//#define DEV_BOARD
+
+#ifdef DEV_BOARD
 /*coder's pins*/
+#define CODER_L_A    (2)
+#define CODER_L_B    (3)
+#define CODER_R_A    (6)
+#define CODER_R_B    (7)
+
+#define MOTOR_L_PWM		10
+#define MOTOR_L_DIR		10
+#define MOTOR_L_BRAKE	10
+#define MOTOR_L_SENSE	A1
+
+#define MOTOR_R_PWM		10
+#define MOTOR_R_DIR		10
+#define MOTOR_R_BRAKE	10
+#define MOTOR_R_SENSE	A0
+
+#else
 #define CODER_L_A    (4)
 #define CODER_L_B    (3)
 #define CODER_R_A    (5)
 #define CODER_R_B    (6)
-
-#define DEBUG_PIN_ASSERV 12
-#define DEBUG_PIN_GENERAL 13
 
 #define MOTOR_L_PWM		10
 #define MOTOR_L_DIR		11
@@ -19,9 +35,15 @@
 #define MOTOR_R_DIR		7
 #define MOTOR_R_BRAKE	8
 #define MOTOR_R_SENSE	A0
+#endif //DEV_BOARD
+
+#define DEBUG_PIN_ASSERV 12
+#define DEBUG_PIN_GENERAL 13
+
+
 
 #define DEFAULT_TICK_PER_METERS (4798.0)
-#define DEFAULT_TICK_PER_RADS (515.678044375)
+#define DEFAULT_TICK_PER_RADS (3011.0)
 
 //refresh frequency of the PID and odometry, in Hz
 #define REFRESH_FREQ 1000
@@ -45,27 +67,6 @@
 
 #define DIST_WHEEL2CENTER (0.055)
 
-#define I2C_ADDR	0x42
-
-// #define SERVO_COUNT 4
-// #define SERVO_1_PIN 17
-// #define SERVO_2_PIN 18
-// #define SERVO_3_PIN 20
-// #define SERVO_4_PIN 21
-
-#define SERVO_RATATOUILLE 16
-#define SERVO_RATATOUILLE_ANGLE_IDLE 90
-#define SERVO_RATATOUILLE_ANGLE_TOP 5
-#define SERVO_RATATOUILLE_ANGLE_BOTTOM 175
-
-#define SERVO_NET_RIGHT 20
-#define SERVO_NET_RIGHT_ANGLE_TRIGGER 172
-#define SERVO_NET_RIGHT_ANGLE_IDLE (SERVO_NET_RIGHT_ANGLE_TRIGGER-40)
-
-#define SERVO_NET_LEFT 21
-#define SERVO_NET_LEFT_ANGLE_TRIGGER 180-SERVO_NET_RIGHT_ANGLE_TRIGGER
-#define SERVO_NET_LEFT_ANGLE_IDLE 180-SERVO_NET_RIGHT_ANGLE_IDLE
-
 #define SERVO_BRAS_LEFT 15
 #define SERVO_BRAS_RIGHT 17
 
@@ -76,8 +77,6 @@
 #define SERVO_BRAS_RIGHT_HIGH 75
 #define SERVO_BRAS_RIGHT_LOW 135
 #define SERVO_BRAS_RIGHT_IDLE (SERVO_BRAS_RIGHT_HIGH+SERVO_BRAS_RIGHT_LOW)/2
-
-
 
 #define ULTRASOUND_PIN 14
 
