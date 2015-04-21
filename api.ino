@@ -223,7 +223,7 @@ void cmd_getUltrasounds(int32_t* dist){
   	*dist = ping.centimeters();
 }
 
-void cmd_setTickRatio(double new_ticks_per_meters,double new_ticks_per_rads)
+void cmd_setTickRatio(uint32_t new_ticks_per_meters,uint32_t new_ticks_per_rads)
 {
 	odo_setTickRatio(new_ticks_per_meters,new_ticks_per_rads);
 }

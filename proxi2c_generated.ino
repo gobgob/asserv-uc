@@ -183,8 +183,8 @@ void i2c_runCmd(int i2c_reg,uint8_t * data_in,uint8_t * data_out,uint8_t * data_
 		case REG_SETTICKRATIO :
 		Serial.println("cmd_setTickRatio");
 			cmd_setTickRatio( 
-			MAKEDOUBLE(data_in[0],data_in[1],data_in[2],data_in[3]),
-			MAKEDOUBLE(data_in[4],data_in[5],data_in[6],data_in[7]) 
+			MAKEUINT32_T(data_in[0],data_in[1],data_in[2],data_in[3]),
+			MAKEUINT32_T(data_in[4],data_in[5],data_in[6],data_in[7]) 
 			);
 		break;
 		case REG_SETBRAS :
