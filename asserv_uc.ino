@@ -57,10 +57,10 @@ void setup()
 	motorRight.setup();
 	motorLeft.setup();
 	
-	asserv_setCoeffDist(1*9000,0);
-	asserv_setCoeffAngle(1*10000,0);
-	asserv_setSpeedMaxDist(200000);
-	asserv_setSpeedMaxAngle(200000);
+	asserv_setCoeffDist(40,0);
+	asserv_setCoeffAngle(40,0);
+	asserv_setSpeedMaxDist(100000);
+	asserv_setSpeedMaxAngle(100000);
 	asserv_setTarget(0,0,ABS);
 
 	odo_enable();
