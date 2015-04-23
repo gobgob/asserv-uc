@@ -171,8 +171,8 @@ void asserv_run()
 	cmd_angle=maximize(cmd_angle,speed_max_angle);
 	// DUMP_VAR(cmd_angle);
 
-	int32_t cmd_right=cmd_dist+cmd_angle;
-	int32_t cmd_left=cmd_dist-cmd_angle;
+	int32_t cmd_right=cmd_dist-cmd_angle;
+	int32_t cmd_left=cmd_dist+cmd_angle;
 
 	motorRight.setSpeed(cmd_right/1024);
 	motorLeft.setSpeed(cmd_left/1024);
