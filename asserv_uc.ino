@@ -17,9 +17,7 @@ Encoder coderRight(CODER_R_A,CODER_R_B);
 HBridge motorLeft(MOTOR_L_PWM,MOTOR_L_DIR,MOTOR_L_BRAKE);
 HBridge motorRight(MOTOR_R_PWM,MOTOR_R_DIR,MOTOR_R_BRAKE);
 
-Servo servoNetRight;
-Servo servoNetLeft;
-Servo servoRatatouille;
+Servo servoFrontGrip;
 Servo servoBrasLeft;
 Servo servoBrasRight;
 
@@ -34,17 +32,11 @@ void setup()
 {
 	pinMode(DEBUG_PIN_GENERAL,OUTPUT);
 
-	servoNetRight.attach(SERVO_NET_RIGHT);
-	servoNetLeft.attach(SERVO_NET_LEFT);
-	servoRatatouille.attach(SERVO_RATATOUILLE);
-
-	servoNetLeft.write(SERVO_NET_LEFT_ANGLE_IDLE);
-	servoNetRight.write(SERVO_NET_RIGHT_ANGLE_IDLE);
-	servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_IDLE);
-
+	servoFrontGrip.attach(SERVO_FRONT_GRIP);
 	servoBrasLeft.attach(SERVO_BRAS_LEFT);
 	servoBrasRight.attach(SERVO_BRAS_RIGHT);
 
+	servoFrontGrip.write(SERVO_FRONT_GRIP_IDLE);
 	servoBrasLeft.write(SERVO_BRAS_LEFT_IDLE);
 	servoBrasRight.write(SERVO_BRAS_RIGHT_IDLE);
 

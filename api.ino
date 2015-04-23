@@ -171,52 +171,11 @@ void cmd_setTicks(int32_t left,int32_t right)
 	coderRight.write(right);
 }
 
-void cmd_setServo(uint8_t number,uint8_t angle)
+void cmd_setFrontGrip(int8_t angle)
 {
-	// if (number<SERVO_COUNT) {
-	// 	servo[number].write(angle);
-	// }
+	DUMP_VAR(angle)
+	servoFrontGrip.write(angle);
 }
-
-void ratatouille_run()
-{
-	static int status=0;
-	if(status) {
-		servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_TOP);
-	}else{
-		servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_BOTTOM);
-	}
-	status=!status;
-}
-
-void ratatouille_stop()
-{
-	servoRatatouille.write(SERVO_RATATOUILLE_ANGLE_IDLE);
-	timerRatatouille.end();
-}
-
-void cmd_ratatouille(int8_t run,uint32_t delay_ms)
-{
-	if (run) {
-		timerRatatouille.begin(ratatouille_run, 1000*delay_ms);
-	} else {
-		timerRatatouille.begin(ratatouille_stop, 10);
-	}
-}
-
-void cmd_launchNet(int8_t left,int8_t right,int8_t reset)
-{
-	if (reset) {
-		servoNetLeft.write(SERVO_NET_LEFT_ANGLE_IDLE);
-		servoNetRight.write(SERVO_NET_RIGHT_ANGLE_IDLE);
-	}else{
-		if (left)
-			servoNetLeft.write(SERVO_NET_LEFT_ANGLE_TRIGGER);
-		if (right)
-			servoNetRight.write(SERVO_NET_RIGHT_ANGLE_TRIGGER);
-	}
-}
-
 
 void cmd_getUltrasounds(int32_t* dist){
   	ping.fire();

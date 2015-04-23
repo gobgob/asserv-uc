@@ -15,11 +15,9 @@ enum i2c_registers
 	REG_SETTICKS=11,
 	REG_GETULTRASOUNDS=12,
 	REG_GETSTATUS=13,
-	REG_SETSERVO=14,
-	REG_RATATOUILLE=15,
-	REG_LAUNCHNET=16,
-	REG_SETTICKRATIO=17,
-	REG_SETBRAS=18,
+	REG_SETFRONTGRIP=14,
+	REG_SETTICKRATIO=15,
+	REG_SETBRAS=16,
 };
 
 void i2c_runCmd(int i2c_reg,uint8_t * data_in,uint8_t * data_out,uint8_t * data_out_len)
@@ -158,26 +156,10 @@ void i2c_runCmd(int i2c_reg,uint8_t * data_in,uint8_t * data_out,uint8_t * data_
 			SPLITINT8_T(ret_getStatus_cmdhack,data_out,4);
 			*data_out_len = 5;
 		break;
-		case REG_SETSERVO :
-		Serial.println("cmd_setServo");
-			cmd_setServo( 
-			MAKEUINT8_T(data_in[0]),
-			MAKEUINT8_T(data_in[1]) 
-			);
-		break;
-		case REG_RATATOUILLE :
-		Serial.println("cmd_ratatouille");
-			cmd_ratatouille( 
-			MAKEINT8_T(data_in[0]),
-			MAKEUINT32_T(data_in[1],data_in[2],data_in[3],data_in[4]) 
-			);
-		break;
-		case REG_LAUNCHNET :
-		Serial.println("cmd_launchNet");
-			cmd_launchNet( 
-			MAKEINT8_T(data_in[0]),
-			MAKEINT8_T(data_in[1]),
-			MAKEINT8_T(data_in[2]) 
+		case REG_SETFRONTGRIP :
+		Serial.println("cmd_setFrontGrip");
+			cmd_setFrontGrip( 
+			MAKEINT8_T(data_in[0]) 
 			);
 		break;
 		case REG_SETTICKRATIO :
