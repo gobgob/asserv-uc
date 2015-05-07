@@ -12,9 +12,8 @@ void cmd_getTicks(int32_t* left,int32_t* right);
 void cmd_setTicks(int32_t left,int32_t right);
 void cmd_getUltrasounds(int32_t* dist);
 void cmd_getStatus(int8_t* bfr,int8_t* bfl,int8_t* bbr,int8_t* bbl,int8_t* cmdhack);
-void cmd_setFrontGrip(int8_t angle);
+void cmd_setServo(int8_t pin,int8_t angle);
 void cmd_setTickRatio(uint32_t new_ticks_per_meters,uint32_t new_ticks_per_rads);
-void cmd_setBras(int8_t left,int8_t right);
 
 #define SET_ODO_X 1
 #define SET_ODO_Y 2

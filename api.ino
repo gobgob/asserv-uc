@@ -171,10 +171,21 @@ void cmd_setTicks(int32_t left,int32_t right)
 	coderRight.write(right);
 }
 
-void cmd_setFrontGrip(int8_t angle)
+
+static int declared_servo[SERVO_MAX] = {0};
+
+void cmd_setServo(int8_t pin, int8_t angle)
 {
+	DUMP_VAR(pin)
 	DUMP_VAR(angle)
-	servoFrontGrip.write(angle);
+	if(pin<SERVO_MAX){
+		int i = pin-10; //issue with servo count
+		if(declared_servo[i]==0){
+			declared_servo[i] = 1;
+			servo[i].attach(pin);
+		}
+		servo[i].write(angle);
+	}
 }
 
 void cmd_getUltrasounds(int32_t* dist){
@@ -187,14 +198,6 @@ void cmd_setTickRatio(uint32_t new_ticks_per_meters,uint32_t new_ticks_per_rads)
 	odo_setTickRatio(new_ticks_per_meters,new_ticks_per_rads);
 }
 
-void cmd_setBras(int8_t left,int8_t right)
-{
-	int diffleft = SERVO_BRAS_LEFT_LOW-SERVO_BRAS_LEFT_HIGH;
-	servoBrasLeft.write(SERVO_BRAS_LEFT_LOW-(left*diffleft)/100);
-
-	int diffright = SERVO_BRAS_RIGHT_LOW-SERVO_BRAS_RIGHT_HIGH;
-	servoBrasRight.write(SERVO_BRAS_RIGHT_LOW-(right*diffright)/100);
-}
 void cmd_reboot()
 {
 	//wdt_enable(WDTO_30MS);

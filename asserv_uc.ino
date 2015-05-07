@@ -17,28 +17,18 @@ Encoder coderRight(CODER_R_A,CODER_R_B);
 HBridge motorLeft(MOTOR_L_PWM,MOTOR_L_DIR,MOTOR_L_BRAKE);
 HBridge motorRight(MOTOR_R_PWM,MOTOR_R_DIR,MOTOR_R_BRAKE);
 
-Servo servoFrontGrip;
-Servo servoBrasLeft;
-Servo servoBrasRight;
-
 Ping ping = Ping(ULTRASOUND_PIN);
 
 IntervalTimer timer;
 IntervalTimer timerRatatouille;
+
+Servo servo[SERVO_MAX];
 
 static void refreshStatus();
 
 void setup()
 {
 	pinMode(DEBUG_PIN_GENERAL,OUTPUT);
-
-	servoFrontGrip.attach(SERVO_FRONT_GRIP);
-	servoBrasLeft.attach(SERVO_BRAS_LEFT);
-	servoBrasRight.attach(SERVO_BRAS_RIGHT);
-
-	servoFrontGrip.write(SERVO_FRONT_GRIP_IDLE);
-	servoBrasLeft.write(SERVO_BRAS_LEFT_IDLE);
-	servoBrasRight.write(SERVO_BRAS_RIGHT_IDLE);
 
 	Ping ping = Ping(ULTRASOUND_PIN);
 
