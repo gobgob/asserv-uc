@@ -12,8 +12,8 @@
 #include "i2c.h"
 #include "api.h"
 
-Encoder coderLeft(CODER_L_A,CODER_L_B);
-Encoder coderRight(CODER_R_A,CODER_R_B);
+// Encoder coderLeft(CODER_L_A,CODER_L_B);
+// Encoder coderRight(CODER_R_A,CODER_R_B);
 HBridge motorLeft(MOTOR_L_PWM,MOTOR_L_DIR,MOTOR_L_BRAKE);
 HBridge motorRight(MOTOR_R_PWM,MOTOR_R_DIR,MOTOR_R_BRAKE);
 
@@ -25,6 +25,66 @@ IntervalTimer timerRatatouille;
 Servo servo[SERVO_MAX];
 
 static void refreshStatus();
+
+
+volatile int32_t left_coder_position;
+volatile int32_t right_coder_position;
+
+static void LA_up()
+{
+	// DEBUG_PIN_ON;
+	noInterrupts();
+	if(digitalRead(CODER_L_B))
+		left_coder_position+=4;
+	else
+		left_coder_position-=4;
+	interrupts();
+	// DEBUG_PIN_OFF;
+}
+
+static void RA_up()
+{
+	// DEBUG_PIN_ON;
+	noInterrupts();
+	if(digitalRead(CODER_R_B))
+		right_coder_position+=4;
+	else
+		right_coder_position-=4;
+	interrupts();
+	// DEBUG_PIN_OFF;
+}
+
+int32_t coderRightread()
+{
+	noInterrupts();
+	int32_t tmp = right_coder_position;
+	interrupts();
+	return tmp;
+}
+
+int32_t coderLeftread()
+{
+	noInterrupts();
+	int32_t tmp = left_coder_position;
+	interrupts();
+	return tmp;
+}
+
+void coderRightwrite(int32_t tmp)
+{
+	noInterrupts();
+	right_coder_position = tmp;
+	interrupts();
+}
+
+void coderLeftwrite(int32_t tmp)
+{
+	noInterrupts();
+	left_coder_position = tmp;
+	interrupts();
+}
+
+
 
 void setup()
 {

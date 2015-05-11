@@ -161,14 +161,14 @@ void cmd_getRotKpKd(uint32_t* kp,uint32_t* kd)
 
 void cmd_getTicks(int32_t* left,int32_t* right)
 {
-	*left=coderLeft.read();
-	*right=coderRight.read();
+	*left=coderLeftread();
+	*right=coderRightread();
 }
 
 void cmd_setTicks(int32_t left,int32_t right)
 {
-	coderLeft.write(left);
-	coderRight.write(right);
+	coderLeftwrite(left);
+	coderRightwrite(right);
 }
 
 

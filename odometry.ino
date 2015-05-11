@@ -66,8 +66,8 @@ void odo_setAngle(double new_angle_rad)
 {
 	odo_disable();
 	wait_for_odo();
-	int32_t dist_right=coderRight.read();
-	int32_t dist_left=coderLeft.read();
+	int32_t dist_right=coderRightread();
+	int32_t dist_left=coderLeftread();
 	int32_t current_angle_tick=dist_right-dist_left;
 	double current_angle_rad = current_angle_tick/ticks_per_rads;
 
@@ -116,8 +116,8 @@ void odo_update()
 
 	static int32_t old_dist_tick = 0;
 
-	int32_t dist_right=coderRight.read();
-	int32_t dist_left=coderLeft.read();
+	int32_t dist_right=coderRightread();
+	int32_t dist_left=coderLeftread();
 
 	//The relative distance since the last time whe updated the postion
 	int32_t new_dist_tick=(dist_left+dist_right)/2;

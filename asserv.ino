@@ -148,8 +148,8 @@ void asserv_run()
 
 	mutex_asserve_is_running=true;
 
-	int32_t dist_right=coderRight.read();
-	int32_t dist_left=coderLeft.read();
+	int32_t dist_right=coderRightread();
+	int32_t dist_left=coderLeftread();
 
 	dist=(dist_left+dist_right)/2;
 	angle=dist_right-dist_left;
