@@ -174,17 +174,19 @@ void cmd_setTicks(int32_t left,int32_t right)
 
 static int declared_servo[SERVO_MAX] = {0};
 
-void cmd_setServo(int8_t pin, int8_t angle)
+void cmd_setServo(int32_t pin,int32_t angle)
 {
 	DUMP_VAR(pin)
 	DUMP_VAR(angle)
-	if(pin<SERVO_MAX){
-		int i = pin-10; //issue with servo count
-		if(declared_servo[i]==0){
-			declared_servo[i] = 1;
+	int i = pin-10; //issue with servo count
+	if(i<SERVO_MAX){
+		// if(declared_servo[i]==0){
+			// declared_servo[i] = 1;
 			servo[i].attach(pin);
-		}
+		// }
 		servo[i].write(angle);
+	}else{
+		Serial.println("Wronf servo\n");
 	}
 }
 

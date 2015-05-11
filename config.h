@@ -7,7 +7,7 @@
 #define CODER_R_A    (6)
 #define CODER_R_B    (5)
 
-#define DEBUG_PIN_ASSERV 12
+#define DEBUG_PIN_CODEUSE 14
 #define DEBUG_PIN_GENERAL 13
 
 #define MOTOR_L_PWM		10
@@ -20,8 +20,8 @@
 #define MOTOR_R_BRAKE	8
 #define MOTOR_R_SENSE	A0
 
-#define DEFAULT_TICK_PER_METERS (25500)
-#define DEFAULT_TICK_PER_RADS (4456)
+#define DEFAULT_TICK_PER_METERS (27793)
+#define DEFAULT_TICK_PER_RADS (4125)
 
 //refresh frequency of the PID and odometry, in Hz
 #define REFRESH_FREQ 1000

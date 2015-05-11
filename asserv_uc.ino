@@ -41,8 +41,8 @@ void setup()
 	
 	asserv_setCoeffDist(40,0);
 	asserv_setCoeffAngle(40,0);
-	asserv_setSpeedMaxDist(100000);
-	asserv_setSpeedMaxAngle(100000);
+	asserv_setSpeedMaxDist(110000);
+	asserv_setSpeedMaxAngle(90000);
 	asserv_setTarget(0,0,ABS);
 
 	odo_enable();
