@@ -36,7 +36,7 @@
 //Avoid useless "biiiiiiiiiii" from the motors when to pwm is to low to make it move
 #define ZONE_51	0
 #define BLOCK_CMD_DETECT_MIN	((int32_t)(50))
-#define BLOCK_DURATION_MIN	((int32_t)(1000)) //ms
+#define BLOCK_DURATION_MIN	((int32_t)(500)) //ms
 #define BLOCK_DURATION_LOOP_COUNT ((int32_t)((BLOCK_DURATION_MIN*REFRESH_FREQ)/1000))
 
 

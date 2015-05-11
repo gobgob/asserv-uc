@@ -158,6 +158,11 @@ void cmd_getRotKpKd(uint32_t* kp,uint32_t* kd)
 	asserv_getCoeffAngle(kp,kd);
 }
 
+void cmd_setMaxSpeeds(uint32_t new_rot_speed,uint32_t new_dist_speed)
+{
+	asserv_setSpeedMaxDist(new_dist_speed);
+	asserv_setSpeedMaxAngle(new_rot_speed);
+}
 
 void cmd_getTicks(int32_t* left,int32_t* right)
 {
@@ -173,7 +178,6 @@ void cmd_setTicks(int32_t left,int32_t right)
 
 
 static int declared_servo[SERVO_MAX] = {0};
-
 void cmd_setServo(int32_t pin,int32_t angle)
 {
 	DUMP_VAR(pin)
@@ -186,7 +190,7 @@ void cmd_setServo(int32_t pin,int32_t angle)
 		// }
 		servo[i].write(angle);
 	}else{
-		Serial.println("Wronf servo\n");
+		Serial.println("Wrong servo\n");
 	}
 }
 

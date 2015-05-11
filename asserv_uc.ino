@@ -105,6 +105,13 @@ void setup()
 	asserv_setSpeedMaxAngle(90000);
 	asserv_setTarget(0,0,ABS);
 
+	pinMode(CODER_L_A, INPUT);
+	pinMode(CODER_L_B, INPUT);
+	attachInterrupt(CODER_L_A, LA_up, RISING);
+	pinMode(CODER_R_A, INPUT);
+	pinMode(CODER_R_B, INPUT);
+	attachInterrupt(CODER_R_A, RA_up, RISING);
+
 	odo_enable();
 	asserv_enable();
 }

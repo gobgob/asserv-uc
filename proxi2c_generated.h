@@ -14,6 +14,7 @@ void cmd_getUltrasounds(int32_t* dist);
 void cmd_getStatus(int8_t* bfr,int8_t* bfl,int8_t* bbr,int8_t* bbl,int8_t* cmdhack);
 void cmd_setServo(int32_t pin,int32_t angle);
 void cmd_setTickRatio(uint32_t new_ticks_per_meters,uint32_t new_ticks_per_rads);
+void cmd_setMaxSpeeds(uint32_t new_rot_speed,uint32_t new_dist_speed);
 
 #define SET_ODO_X 1
 #define SET_ODO_Y 2
