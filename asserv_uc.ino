@@ -2,6 +2,9 @@
 #include <Servo.h>
 #include <Ping.h>
 
+#include <Wire.h>
+#include <SFE_VL6180X.h>
+
 
 #include "config.h"
 #include "utils.h"
@@ -11,6 +14,10 @@
 #include "navigation.h"
 #include "i2c.h"
 #include "api.h"
+
+#define VL6180X_ADDRESS 0x29
+VL6180xIdentification identification;
+VL6180x sensor(VL6180X_ADDRESS);
 
 // Encoder coderLeft(CODER_L_A,CODER_L_B);
 // Encoder coderRight(CODER_R_A,CODER_R_B);
@@ -90,7 +97,7 @@ void setup()
 {
 	pinMode(DEBUG_PIN_GENERAL,OUTPUT);
 
-	Ping ping = Ping(ULTRASOUND_PIN);
+	// Ping ping = Ping(ULTRASOUND_PIN);
 
 	Serial.begin(115200);
 	i2c_init();
@@ -112,6 +119,9 @@ void setup()
 	pinMode(CODER_R_B, INPUT);
 	attachInterrupt(CODER_R_A, RA_up, RISING);
 
+	if(sensor.VL6180xInit() != 0){
+		Serial.println("FAILED TO INITALIZE"); //Initialize device and check for errors
+	}; 
 	odo_enable();
 	asserv_enable();
 }

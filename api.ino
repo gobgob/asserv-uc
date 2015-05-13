@@ -195,8 +195,9 @@ void cmd_setServo(int32_t pin,int32_t angle)
 }
 
 void cmd_getUltrasounds(int32_t* dist){
-  	ping.fire();
-  	*dist = ping.centimeters();
+  	// ping.fire();
+  	// *dist = ping.centimeters();
+  	*dist = sensor.getDistance();
 }
 
 void cmd_setTickRatio(uint32_t new_ticks_per_meters,uint32_t new_ticks_per_rads)
